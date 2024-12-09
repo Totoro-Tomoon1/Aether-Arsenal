@@ -5,6 +5,6 @@
 class Sproket : public Enemy
 {
 public:
-	Sproket(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position);
+	Sproket(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, float maxHP);
 };
 

@@ -55,15 +55,15 @@ void GameManager::PlayGame()
 
     //player
     Player player = {sf::IntRect(230, 510, 90, 90),
-                     sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f)};
+                     sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10};
 
     Base base = { sf::IntRect(76, 313, 360, 76),
-                 sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)) };
+                 sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10};
 
     //ennemie test
 
     Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
-                 sf::Vector2f(1.f, 1.f), sf::Vector2f(156.f, 225.f) };
+                 sf::Vector2f(1.f, 1.f), sf::Vector2f(156.f, 225.f), 10};
 
     while (window.isOpen())
     {
@@ -96,8 +96,8 @@ void GameManager::PlayGame()
         window.clear(sf::Color::Black);
 
         window.draw(map);
-        window.draw(player);
         window.draw(base);
+        window.draw(player);
         window.draw(sproket1);
 
         window.display();
