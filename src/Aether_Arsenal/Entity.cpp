@@ -2,9 +2,9 @@
 
 Entity::Entity(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position)
 {
-	mSprite.setPosition(position);
 	mSprite.setTexture(*GameManager::GetInstance()->GetTexture());
 	mSprite.setTextureRect(rect);
+	mSprite.setPosition(position);
 	mSprite.setScale(scale);
 }
 

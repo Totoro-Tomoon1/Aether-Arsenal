@@ -5,6 +5,11 @@ Player::Player(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, floa
 
 }
 
+sf::Vector2f Player::getPosition() const 
+{
+    return Entity::mSprite.getPosition();
+}
+
 //void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 //{
 //
