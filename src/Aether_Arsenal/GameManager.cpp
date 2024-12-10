@@ -41,7 +41,7 @@ void GameManager::PlayGame()
     sf::RenderWindow window(sf::VideoMode(550, 900), "Aether Arsenal");
     pWindow = &window;
 
-    window.setFramerateLimit(10);
+    window.setFramerateLimit(60);
 
     if (!mTexture.loadFromFile("../../../res/Sprites.png"))
     {
@@ -67,7 +67,8 @@ void GameManager::PlayGame()
     Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
                  sf::Vector2f(1.f, 1.f), sf::Vector2f(156.f, 225.f), 10};
 
-    std::vector<Bullet> bullets;
+    //std::vector<Bullet> bullets;
+    std::vector<Bullet*> ptrbullets;
 
     while (window.isOpen())
     {
@@ -98,37 +99,53 @@ void GameManager::PlayGame()
             {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
                 {
-                    Bullet newBullet = { sf::IntRect(410, 525, 30, 65),
+                    //sf::Vector2f temp = player.getPosition();
+                    Bullet* newBullet1 = new Bullet { sf::IntRect(410, 525, 30, 65),
                         sf::Vector2f(0.5f, 0.5f), 
-                        sf::Vector2f(player.getPosition()), 5, true , sf::Vector2f(0.f, -5.f)};
-                    //std::cout << player.getPosition().x << std::endl;
-                    bullets.push_back(newBullet);
+                        player.getPosition(), 5, true , sf::Vector2f(0.f, -5.f)};
+                    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                        sf::Vector2f(0.5f, 0.5f),
+                        sf::Vector2f(player.getPosition().x +35, player.getPosition().y), 5, true , sf::Vector2f(0.f, -5.f)};
+                    Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                        sf::Vector2f(0.5f, 0.5f),
+                        sf::Vector2f(player.getPosition().x + 70, player.getPosition().y), 5, true , sf::Vector2f(0.f, -5.f) };
+                    //newBullet->setPosition(player.getPosition());
+                    //std::cout << "Player : " << temp.x << "     " << temp.y << std::endl;
+                    //std::cout << "Bullet : " << newBullet->getPosition().x << "     " << newBullet->getPosition().y << std::endl;
+                    //bullets.push_back(newBullet);
+                    ptrbullets.push_back(newBullet1);
+                    ptrbullets.push_back(newBullet2);
+                    ptrbullets.push_back(newBullet3);
                 }
             }
 
         }
-        for (auto &bullet : bullets)
+        for (auto &bullet : ptrbullets)
         {
-            bullet.move(bullet.GetSpeed());
+            bullet->move(bullet->GetSpeed());
+            std::cout << "Bullet2 : " << bullet->getPosition().x << "     " << bullet->getPosition().y << std::endl;
         }
 
-        for (int i = bullets.size() - 1; i >= 0; i--) 
+        for (int i = ptrbullets.size() - 1; i >= 0; i--) 
         {
-            std::cout << "bullets : " << bullets[i].getPosition().x << std::endl;
-            if (bullets[i].getPosition().x < -30) {
-                bullets.erase(bullets.begin() + i);
+            //std::cout << "bullets : " << ptrbullets[i]->Entity::getPosition().x << std::endl;
+            if (ptrbullets[i]->getPosition().y < -1000)
+            {
+                //std::cout << "Bullet3 : " << ptrbullets[i]->getPosition().x << "     " << ptrbullets[i]->getPosition().y << std::endl;
+                ptrbullets.erase(ptrbullets.begin() + i);
             }
         }
 
-        std::cout << bullets.size() << std::endl;
+        //std::cout << ptrbullets.size() << std::endl;
         window.clear(sf::Color::Black);
 
         window.draw(map);
         window.draw(base);
         
-        for (auto& bullet : bullets)
+        for (auto& bullet : ptrbullets)
         {
-            window.draw(bullet);
+            //std::cout << "Bullet4 : " << bullet->getPosition().x << "     " << bullet->getPosition().y << std::endl;
+            window.draw(*bullet);
         }
 
         window.draw(player);
