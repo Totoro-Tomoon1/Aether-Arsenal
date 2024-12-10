@@ -75,10 +75,18 @@ void GameManager::PlayGame()
     //std::vector<Bullet> bullets;
     std::vector<Bullet*> ptrbullets;
 
-    Scene niveau1 = {ennemy, ptrbullets, false};
+    std::vector<Entity*> menu;
+
+    Entity button = { sf::IntRect(75, 505, 75, 90),
+                 sf::Vector2f(1.f, 1.f), sf::Vector2f(156.f, 225.f)};
+
+    menu.push_back(&button);
+
+    Scene menus = {menu, ptrbullets, false, false };
+    Scene niveau1 = {ennemy, ptrbullets, true, true};
     std::vector<Scene*> levels;
     levels.push_back(&niveau1);
-    SceneManager sceneManger = {&niveau1, levels, &niveau1};
+    SceneManager sceneManager = {&menus, levels, &niveau1};
 
     while (window.isOpen())
     {
@@ -88,8 +96,10 @@ void GameManager::PlayGame()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            
+            //std::cout << sceneManager.GetCurrentScene()->GetIsFight() << std::endl;
 
-            if (event.type == sf::Event::KeyPressed)
+            if (event.type == sf::Event::KeyPressed && sceneManager.GetCurrentScene()->GetIsFight())
             {
                 //walk
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))//Z
@@ -107,7 +117,7 @@ void GameManager::PlayGame()
             }
             else if (event.type == sf::Event::MouseButtonPressed)
             {
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight())
                 {
                     //sf::Vector2f temp = player.getPosition();
                     Bullet* newBullet1 = new Bullet { sf::IntRect(410, 525, 30, 65),
@@ -123,12 +133,17 @@ void GameManager::PlayGame()
                     //std::cout << "Player : " << temp.x << "     " << temp.y << std::endl;
                     //std::cout << "Bullet : " << newBullet->getPosition().x << "     " << newBullet->getPosition().y << std::endl;
                     //bullets.push_back(newBullet);
-                    sceneManger.GetCurrentScene()->GetMBullet()->push_back((newBullet1));
-                    sceneManger.GetCurrentScene()->GetMBullet()->push_back((newBullet2)); 
-                    sceneManger.GetCurrentScene()->GetMBullet()->push_back((newBullet3));
+                    sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet1));
+                    sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet2)); 
+                    sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet3));
                     /*ptrbullets.push_back(newBullet1);
                     ptrbullets.push_back(newBullet2);
                     ptrbullets.push_back(newBullet3);*/
+                }
+                else if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                {
+                    sceneManager.ChangeScene(&niveau1);
+                    std::cout << sf::Mouse::getPosition(window).x << "   " << sf::Mouse::getPosition(window).y << std::endl;
                 }
             }
 
@@ -150,7 +165,7 @@ void GameManager::PlayGame()
         //    }
         //}
 
-        sceneManger.GetCurrentScene()->Updates();
+        sceneManager.GetCurrentScene()->Updates();
 
         //std::cout << ptrbullets.size() << std::endl;
         window.clear(sf::Color::Black);
@@ -164,7 +179,7 @@ void GameManager::PlayGame()
         //    window.draw(*bullet);
         //}
 
-        sceneManger.GetCurrentScene()->draw();
+        sceneManager.GetCurrentScene()->draw();
 
         window.draw(player);
         window.draw(sproket1);
