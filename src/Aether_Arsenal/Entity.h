@@ -12,6 +12,7 @@ public:
 
 	void Move(int keyCode);
 	void SetSprite();
+	sf::Sprite* GetSprite();
 
 
 
