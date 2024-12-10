@@ -1,12 +1,13 @@
 #include "Scene.h"
 #include "GameManager.h"
 
-Scene::Scene(std::vector<Entity*> ennemy, std::vector<Bullet*> bullet, bool isFinish, bool isFight)
+Scene::Scene(std::vector<Entity*> ennemy, std::vector<Bullet*> bullet, bool isFinish, bool isFight, sf::Sprite map)
 {
 	mEnnemy = ennemy;
 	mBullet = bullet;
 	mIsFinish = isFinish;
     mIsFight = isFight;
+    mMap = map;
 }
 
 std::vector<Bullet*>* Scene::GetMBullet()
@@ -61,12 +62,17 @@ void Scene::draw()
 {
     sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
 
-    //window->draw(base);
+    window->draw(mMap);
 
     for (auto& bullet : mBullet)
     {
         //std::cout << "Bullet4 : " << bullet->getPosition().x << "     " << bullet->getPosition().y << std::endl;
         window->draw(*bullet);
+    }
+
+    for (auto& entity : mEnnemy)
+    {
+        window->draw(*entity);
     }
 
     //window->draw(player);

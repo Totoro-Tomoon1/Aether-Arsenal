@@ -11,9 +11,10 @@ class Scene
 	std::vector<Bullet*> mBullet;
 	bool mIsFinish;
 	bool mIsFight;
+	sf::Sprite mMap;
 
 public:
-	Scene(std::vector<Entity*> ennemy, std::vector<Bullet*> bullet, bool isFinish, bool isFight);
+	Scene(std::vector<Entity*> ennemy, std::vector<Bullet*> bullet, bool isFinish, bool isFight, sf::Sprite map);
 
 	std::vector<Bullet*>* GetMBullet();
 	void Updates();

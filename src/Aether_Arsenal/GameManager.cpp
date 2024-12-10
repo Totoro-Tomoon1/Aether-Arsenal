@@ -45,7 +45,7 @@ void GameManager::PlayGame()
 
     window.setFramerateLimit(60);
 
-    if (!mTexture.loadFromFile("../../../res/Sprites.png"))
+    if (!mTexture.loadFromFile("../../../res/Sprite.png"))
     {
     }
 
@@ -56,6 +56,13 @@ void GameManager::PlayGame()
     }
     sf::Sprite map(texture);
     map.setScale(sf::Vector2f(550.f / 768.f, 900.f / 1344.f));
+
+    sf::Texture fond;
+    if (!fond.loadFromFile("../../../res/menu.png"))
+    {
+    }
+    sf::Sprite ecran(fond);
+    ecran.setScale(sf::Vector2f(550.f /375.f, 900.f / 750.f));
 
     //player
     Player player = {sf::IntRect(230, 510, 90, 90),
@@ -77,13 +84,13 @@ void GameManager::PlayGame()
 
     std::vector<Entity*> menu;
 
-    Entity button = { sf::IntRect(75, 505, 75, 90),
-                 sf::Vector2f(1.f, 1.f), sf::Vector2f(156.f, 225.f)};
+    Entity button = { sf::IntRect(781, 470, 354, 150),
+                 sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 325.f)};
 
     menu.push_back(&button);
 
-    Scene menus = {menu, ptrbullets, false, false };
-    Scene niveau1 = {ennemy, ptrbullets, true, true};
+    Scene menus = {menu, ptrbullets, false, false ,ecran};
+    Scene niveau1 = {ennemy, ptrbullets, false, true, map};
     std::vector<Scene*> levels;
     levels.push_back(&niveau1);
     SceneManager sceneManager = {&menus, levels, &niveau1};
@@ -142,8 +149,17 @@ void GameManager::PlayGame()
                 }
                 else if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
                 {
-                    sceneManager.ChangeScene(&niveau1);
-                    std::cout << sf::Mouse::getPosition(window).x << "   " << sf::Mouse::getPosition(window).y << std::endl;
+                    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                    // Récupérer la boîte englobante du sprite
+                    sf::FloatRect buttonBounds = button.GetSprite()->getGlobalBounds();
+                    sf::FloatRect globalButtonBounds = button.getTransform().transformRect(buttonBounds);
+
+                    // Vérifier si la position de la souris est dans la boîte englobante du sprite
+                    if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
+                    {
+                        sceneManager.ChangeScene(&niveau1);
+                    }
                 }
             }
 
@@ -170,7 +186,7 @@ void GameManager::PlayGame()
         //std::cout << ptrbullets.size() << std::endl;
         window.clear(sf::Color::Black);
 
-        window.draw(map);
+        //window.draw(map);
         window.draw(base);
         
         //for (auto& bullet : ptrbullets)
@@ -182,7 +198,7 @@ void GameManager::PlayGame()
         sceneManager.GetCurrentScene()->draw();
 
         window.draw(player);
-        window.draw(sproket1);
+        //window.draw(sproket1);
 
         window.display();
 
