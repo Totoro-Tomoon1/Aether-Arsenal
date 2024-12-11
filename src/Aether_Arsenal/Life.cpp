@@ -10,3 +10,8 @@ void Life::TakeDamage(float damage)
 {
 	mCurrentHP -= damage;
 }
+
+float Life::GetHP()
+{
+	return mCurrentHP;
+}

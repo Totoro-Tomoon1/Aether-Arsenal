@@ -38,6 +38,7 @@ void Scene::Updates()
 
     for (int i = mBullet.size() - 1; i >= 0; i--)
     {
+        int j = 0;
         for (auto& enn : mEnnemy)
         {
             sf::FloatRect bulletBounds = mBullet[i]->GetSprite()->getGlobalBounds();
@@ -51,8 +52,15 @@ void Scene::Updates()
             {
                 delete (mBullet[i]);
                 mBullet.erase(mBullet.begin() + i);
-                std::cout << mBullet.size() << std::endl;
+                //std::cout << mBullet.size() << std::endl;
+                enn->TakeDamage(mBullet[i]->GetDamage());
             }
+
+            if (enn->GetHP() <= 0)
+            {
+                mEnnemy.erase(mEnnemy.begin() + j);
+            }
+            j++;
         }
     }
 }

@@ -10,5 +10,6 @@ public:
 	Life(float maxHP);
 
 	void TakeDamage(float damage);
+	float GetHP();
 };
 

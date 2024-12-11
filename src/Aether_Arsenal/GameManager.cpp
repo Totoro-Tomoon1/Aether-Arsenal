@@ -76,7 +76,7 @@ void GameManager::PlayGame()
     std::vector<Enemy*> ennemyNiveau1;
 
     Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
-                 sf::Vector2f(1.f, 1.f), sf::Vector2f(156.f, 225.f), 10};
+                 sf::Vector2f(1.f, 1.f), sf::Vector2f(156.f, 225.f), 200};
 
     ennemyNiveau1.push_back(&sproket1);
 
