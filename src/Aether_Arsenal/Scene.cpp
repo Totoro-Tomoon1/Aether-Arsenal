@@ -1,9 +1,10 @@
 #include "Scene.h"
 #include "GameManager.h"
 
-Scene::Scene(std::vector<Entity*> ennemy, std::vector<Bullet*> bullet, bool isFinish, bool isFight, sf::Sprite map)
+Scene::Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, std::vector<Bullet*> bullet, bool isFinish, bool isFight, sf::Sprite map)
 {
 	mEnnemy = ennemy;
+    mEntity = entity;
 	mBullet = bullet;
 	mIsFinish = isFinish;
     mIsFight = isFight;
@@ -35,14 +36,12 @@ void Scene::Updates()
         }
     }
 
-    int i = 0;
-
-    for (auto& bullet : mBullet)
+    for (int i = mBullet.size() - 1; i >= 0; i--)
     {
         for (auto& enn : mEnnemy)
         {
-            sf::FloatRect bulletBounds = bullet->GetSprite()->getGlobalBounds();
-            sf::FloatRect globalBulletBounds = bullet->getTransform().transformRect(bulletBounds);
+            sf::FloatRect bulletBounds = mBullet[i]->GetSprite()->getGlobalBounds();
+            sf::FloatRect globalBulletBounds = mBullet[i]->getTransform().transformRect(bulletBounds);
             sf::FloatRect enemyBounds = enn->GetSprite()->getGlobalBounds();
             sf::FloatRect globalEnemyBounds = enn->getTransform().transformRect(enemyBounds);
             //sf::FloatRect ennemyBounds = enn->GetSprite()->getGlobalBounds();
@@ -50,11 +49,11 @@ void Scene::Updates()
                 //<< bulletBounds.width << ", " << bulletBounds.height << ")\n";
             if (globalBulletBounds.intersects(globalEnemyBounds))
             {
-
-                std::cout << "test" << std::endl;
+                delete (mBullet[i]);
+                mBullet.erase(mBullet.begin() + i);
+                std::cout << mBullet.size() << std::endl;
             }
         }
-        i++;
     }
 }
 
@@ -70,7 +69,12 @@ void Scene::draw()
         window->draw(*bullet);
     }
 
-    for (auto& entity : mEnnemy)
+    for (auto& ennemy : mEnnemy)
+    {
+        window->draw(*ennemy);
+    }
+
+    for (auto& entity : mEntity)
     {
         window->draw(*entity);
     }

@@ -2,19 +2,21 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "Entity.h"
+#include "Enemy.h"
 #include "Bullet.h"
 #include <iostream>
 
 class Scene
 {
-	std::vector<Entity*> mEnnemy;
+	std::vector<Enemy*> mEnnemy;
+	std::vector<Entity*> mEntity;
 	std::vector<Bullet*> mBullet;
 	bool mIsFinish;
 	bool mIsFight;
 	sf::Sprite mMap;
 
 public:
-	Scene(std::vector<Entity*> ennemy, std::vector<Bullet*> bullet, bool isFinish, bool isFight, sf::Sprite map);
+	Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, std::vector<Bullet*> bullet, bool isFinish, bool isFight, sf::Sprite map);
 
 	std::vector<Bullet*>* GetMBullet();
 	void Updates();

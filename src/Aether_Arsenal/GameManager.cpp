@@ -72,12 +72,13 @@ void GameManager::PlayGame()
                  sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10};
 
     //ennemie test
-    std::vector<Entity*> ennemy;
+    std::vector<Enemy*> ennemyMenu;
+    std::vector<Enemy*> ennemyNiveau1;
 
     Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
                  sf::Vector2f(1.f, 1.f), sf::Vector2f(156.f, 225.f), 10};
 
-    ennemy.push_back(&sproket1);
+    ennemyNiveau1.push_back(&sproket1);
 
     //std::vector<Bullet> bullets;
     std::vector<Bullet*> ptrbullets;
@@ -85,15 +86,26 @@ void GameManager::PlayGame()
     std::vector<Entity*> menu;
 
     Entity button = { sf::IntRect(781, 470, 354, 150),
-                 sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 325.f)};
+                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 325.f) };
 
     menu.push_back(&button);
 
-    Scene menus = {menu, ptrbullets, false, false ,ecran};
-    Scene niveau1 = {ennemy, ptrbullets, false, true, map};
+    std::vector<Entity*> level1;
+
+    level1.push_back(&player);
+    level1.push_back(&base);
+
+   
+
+    Scene menus = {ennemyMenu ,menu, ptrbullets, false, false ,ecran};
+    Scene niveau1 = {ennemyNiveau1, level1, ptrbullets, false, true, map};
     std::vector<Scene*> levels;
     levels.push_back(&niveau1);
     SceneManager sceneManager = {&menus, levels, &niveau1};
+
+    sf::Clock clock;
+    bool isPaused = false;
+    float pauseTime = 0.1f;
 
     while (window.isOpen())
     {
@@ -124,30 +136,30 @@ void GameManager::PlayGame()
             }
             else if (event.type == sf::Event::MouseButtonPressed)
             {
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight())
-                {
-                    //sf::Vector2f temp = player.getPosition();
-                    Bullet* newBullet1 = new Bullet { sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f), 
-                        player.getPosition(), 5, true , sf::Vector2f(0.f, -5.f)};
-                    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(player.getPosition().x +35, player.getPosition().y), 5, true , sf::Vector2f(0.f, -5.f)};
-                    Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(player.getPosition().x + 70, player.getPosition().y), 5, true , sf::Vector2f(0.f, -5.f) };
-                    //newBullet->setPosition(player.getPosition());
-                    //std::cout << "Player : " << temp.x << "     " << temp.y << std::endl;
-                    //std::cout << "Bullet : " << newBullet->getPosition().x << "     " << newBullet->getPosition().y << std::endl;
-                    //bullets.push_back(newBullet);
-                    sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet1));
-                    sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet2)); 
-                    sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet3));
-                    /*ptrbullets.push_back(newBullet1);
-                    ptrbullets.push_back(newBullet2);
-                    ptrbullets.push_back(newBullet3);*/
-                }
-                else if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                //if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight())
+                //{
+                //    //sf::Vector2f temp = player.getPosition();
+                //    Bullet* newBullet1 = new Bullet { sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f), 
+                //        player.getPosition(), 5, true , sf::Vector2f(0.f, -5.f)};
+                //    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(player.getPosition().x +35, player.getPosition().y), 5, true , sf::Vector2f(0.f, -5.f)};
+                //    Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(player.getPosition().x + 70, player.getPosition().y), 5, true , sf::Vector2f(0.f, -5.f) };
+                //    //newBullet->setPosition(player.getPosition());
+                //    //std::cout << "Player : " << temp.x << "     " << temp.y << std::endl;
+                //    //std::cout << "Bullet : " << newBullet->getPosition().x << "     " << newBullet->getPosition().y << std::endl;
+                //    //bullets.push_back(newBullet);
+                //    sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet1));
+                //    sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet2)); 
+                //    sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet3));
+                //    /*ptrbullets.push_back(newBullet1);
+                //    ptrbullets.push_back(newBullet2);
+                //    ptrbullets.push_back(newBullet3);*/
+                //}
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight() == false)
                 {
                     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
@@ -162,8 +174,37 @@ void GameManager::PlayGame()
                     }
                 }
             }
+           
 
         }
+
+         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight())
+         {
+             if (!isPaused)
+             {
+                 isPaused = true;
+                 clock.restart();
+             }
+             else if (isPaused && clock.getElapsedTime().asSeconds() >= pauseTime)
+             {
+                 Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                         sf::Vector2f(0.5f, 0.5f),
+                         player.getPosition(), 5, true , sf::Vector2f(0.f, -5.f) };
+                 Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                     sf::Vector2f(0.5f, 0.5f),
+                     sf::Vector2f(player.getPosition().x + 35, player.getPosition().y), 5, true , sf::Vector2f(0.f, -5.f) };
+                 Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                     sf::Vector2f(0.5f, 0.5f),
+                     sf::Vector2f(player.getPosition().x + 70, player.getPosition().y), 5, true , sf::Vector2f(0.f, -5.f) };
+
+                 sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet1));
+                 sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet2));
+                 sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet3));
+
+                 isPaused = false;
+             }
+             }
+
         //for (auto &bullet : ptrbullets)
         //{
         //    bullet->move(bullet->GetSpeed());
@@ -187,7 +228,7 @@ void GameManager::PlayGame()
         window.clear(sf::Color::Black);
 
         //window.draw(map);
-        window.draw(base);
+        //window.draw(base);
         
         //for (auto& bullet : ptrbullets)
         //{
@@ -197,7 +238,7 @@ void GameManager::PlayGame()
 
         sceneManager.GetCurrentScene()->draw();
 
-        window.draw(player);
+        //window.draw(player);
         //window.draw(sproket1);
 
         window.display();
