@@ -1,6 +1,14 @@
 #include "Entity.h"
 
-Entity::Entity(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position)
+Entity::Entity(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, float maxHP) : Life(maxHP)
+{
+	mSprite.setTexture(*GameManager::GetInstance()->GetTexture());
+	mSprite.setTextureRect(rect);
+	setPosition(position);
+	setScale(scale);
+}
+
+Entity::Entity(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position) : Life(0)
 {
 	mSprite.setTexture(*GameManager::GetInstance()->GetTexture());
 	mSprite.setTextureRect(rect);

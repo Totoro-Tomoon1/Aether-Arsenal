@@ -96,14 +96,17 @@ void GameManager::PlayGame()
     level1.push_back(&base);
 
     std::vector< sf::Vector2f> posEnnemy;
-    posEnnemy.push_back(sf::Vector2f(156.f, 225.f));
-    posEnnemy.push_back(sf::Vector2f(256.f, 225.f));
+    posEnnemy.push_back(sf::Vector2f(0.f, 0.f));
+    posEnnemy.push_back(sf::Vector2f(100.f, 0.f));
+    posEnnemy.push_back(sf::Vector2f(200.f, 0.f));
+    posEnnemy.push_back(sf::Vector2f(300.f, 0.f));
+    posEnnemy.push_back(sf::Vector2f(400.f, 0.f));
 
     Scene menus = {entityMenu , false ,ecran};
-    Scene niveau1 = {2, posEnnemy, level1, true, map};
+    Scene* niveau1 = new Scene(posEnnemy, level1, true, map);
     std::vector<Scene*> levels;
-    levels.push_back(&niveau1);
-    SceneManager sceneManager = {&menus, levels, &niveau1};
+    levels.push_back(niveau1);
+    SceneManager sceneManager = {&menus, levels, niveau1};
 
     sf::Clock clock;
     bool isPaused = false;
@@ -172,7 +175,15 @@ void GameManager::PlayGame()
                     // Vérifier si la position de la souris est dans la boîte englobante du sprite
                     if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
                     {
-                        sceneManager.ChangeScene(&niveau1);
+                        delete niveau1;
+                        niveau1 = new Scene(posEnnemy, level1, true, map);
+                        player = { sf::IntRect(230, 510, 90, 90),
+                                   sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
+
+                        base = { sf::IntRect(76, 313, 360, 76),
+                                 sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10 };
+
+                        sceneManager.ChangeScene(niveau1);
                     }
                 }
             }
@@ -205,7 +216,15 @@ void GameManager::PlayGame()
 
                  isPaused = false;
              }
+         }
+
+         if (sceneManager.GetCurrentScene()->GetIsFight())
+         {
+             if (sceneManager.GetCurrentScene()->GetHPBase() <= 0)
+             {
+                 sceneManager.ChangeScene(&menus);
              }
+         }
 
         //for (auto &bullet : ptrbullets)
         //{
@@ -223,6 +242,7 @@ void GameManager::PlayGame()
         //        ptrbullets.erase(ptrbullets.begin() + i);
         //    }
         //}
+
 
         sceneManager.GetCurrentScene()->Updates();
 

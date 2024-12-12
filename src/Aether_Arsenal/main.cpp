@@ -10,5 +10,7 @@ int main()
 
 	GameManager::GetInstance()->PlayGame();
 
+	
+
 	return 0;
 }

@@ -17,12 +17,14 @@ class Scene
 
 public:
 	//Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map);
-	Scene(int nbSparkle, std::vector< sf::Vector2f> posEnnemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map);
+	Scene(std::vector< sf::Vector2f> posEnnemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map);
 	Scene(std::vector<Entity*> entity, bool isFight, sf::Sprite map);
 
 	std::vector<Bullet*>* GetMBullet();
 	void Updates();
 	void draw();
 	bool GetIsFight();
+	float GetHPBase();
+	void Reset();
 };
 
