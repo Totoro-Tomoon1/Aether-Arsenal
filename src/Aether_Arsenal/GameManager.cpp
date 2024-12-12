@@ -72,33 +72,35 @@ void GameManager::PlayGame()
                  sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10};
 
     //ennemie test
-    std::vector<Enemy*> ennemyMenu;
-    std::vector<Enemy*> ennemyNiveau1;
+    std::vector<Entity*> entityMenu;
+    /*std::vector<Enemy*> ennemyNiveau1;
 
     Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
                  sf::Vector2f(1.f, 1.f), sf::Vector2f(156.f, 225.f), 200};
 
-    ennemyNiveau1.push_back(&sproket1);
+    ennemyNiveau1.push_back(&sproket1);*/
 
     //std::vector<Bullet> bullets;
-    std::vector<Bullet*> ptrbullets;
+    //std::vector<Bullet*> ptrbullets;
 
-    std::vector<Entity*> menu;
+    //std::vector<Entity*> menu;
 
     Entity button = { sf::IntRect(781, 470, 354, 150),
                 sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 325.f) };
 
-    menu.push_back(&button);
+    entityMenu.push_back(&button);
 
     std::vector<Entity*> level1;
 
     level1.push_back(&player);
     level1.push_back(&base);
 
-   
+    std::vector< sf::Vector2f> posEnnemy;
+    posEnnemy.push_back(sf::Vector2f(156.f, 225.f));
+    posEnnemy.push_back(sf::Vector2f(256.f, 225.f));
 
-    Scene menus = {ennemyMenu ,menu, ptrbullets, false, false ,ecran};
-    Scene niveau1 = {ennemyNiveau1, level1, ptrbullets, false, true, map};
+    Scene menus = {entityMenu , false ,ecran};
+    Scene niveau1 = {2, posEnnemy, level1, true, map};
     std::vector<Scene*> levels;
     levels.push_back(&niveau1);
     SceneManager sceneManager = {&menus, levels, &niveau1};

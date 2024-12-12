@@ -1,12 +1,36 @@
 #include "Scene.h"
 #include "GameManager.h"
+#include "Sproket.h"
 
-Scene::Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, std::vector<Bullet*> bullet, bool isFinish, bool isFight, sf::Sprite map)
+//Scene::Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map)
+//{
+//	mEnnemy = ennemy;
+//    mEntity = entity;
+//    std::vector<Bullet*> bullet;
+//	mBullet = bullet;
+//	mIsFinish = false;
+//    mIsFight = isFight;
+//    mMap = map;
+//}
+
+Scene::Scene(int nbSproket, std::vector< sf::Vector2f> posEnnemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map)
 {
-	mEnnemy = ennemy;
+    for (int i = 0; i < nbSproket; i++)
+    {
+        Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
+                 sf::Vector2f(1.f, 1.f), posEnnemy[i], 200};
+        mEnnemy.push_back(sproket1);
+    }
     mEntity = entity;
-	mBullet = bullet;
-	mIsFinish = isFinish;
+    std::vector<Bullet*> bullet;
+    mBullet = bullet;
+    mIsFight = isFight;
+    mMap = map;
+}
+
+Scene::Scene(std::vector<Entity*> entity, bool isFight, sf::Sprite map)
+{
+    mEntity = entity;
     mIsFight = isFight;
     mMap = map;
 }
@@ -43,8 +67,8 @@ void Scene::Updates()
         {
             sf::FloatRect bulletBounds = mBullet[i]->GetSprite()->getGlobalBounds();
             sf::FloatRect globalBulletBounds = mBullet[i]->getTransform().transformRect(bulletBounds);
-            sf::FloatRect enemyBounds = enn->GetSprite()->getGlobalBounds();
-            sf::FloatRect globalEnemyBounds = enn->getTransform().transformRect(enemyBounds);
+            sf::FloatRect enemyBounds = enn.GetSprite()->getGlobalBounds();
+            sf::FloatRect globalEnemyBounds = enn.getTransform().transformRect(enemyBounds);
             //sf::FloatRect ennemyBounds = enn->GetSprite()->getGlobalBounds();
             //std::cout << "Bullet: (" << bulletBounds.left << ", " << bulletBounds.top << ", "
                 //<< bulletBounds.width << ", " << bulletBounds.height << ")\n";
@@ -53,10 +77,10 @@ void Scene::Updates()
                 delete (mBullet[i]);
                 mBullet.erase(mBullet.begin() + i);
                 //std::cout << mBullet.size() << std::endl;
-                enn->TakeDamage(mBullet[i]->GetDamage());
+                enn.TakeDamage(mBullet[i]->GetDamage());
             }
 
-            if (enn->GetHP() <= 0)
+            if (enn.GetHP() <= 0)
             {
                 mEnnemy.erase(mEnnemy.begin() + j);
             }
@@ -79,7 +103,7 @@ void Scene::draw()
 
     for (auto& ennemy : mEnnemy)
     {
-        window->draw(*ennemy);
+        window->draw(ennemy);
     }
 
     for (auto& entity : mEntity)
