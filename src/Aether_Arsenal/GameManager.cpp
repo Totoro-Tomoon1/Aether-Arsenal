@@ -64,13 +64,6 @@ void GameManager::PlayGame()
     sf::Sprite ecran(fond);
     ecran.setScale(sf::Vector2f(550.f /375.f, 900.f / 750.f));
 
-    //player
-    Player player = {sf::IntRect(230, 510, 90, 90),
-                     sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10};
-
-    Base base = { sf::IntRect(76, 313, 360, 76),
-                 sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10};
-
     //ennemie test
     std::vector<Entity*> entityMenu;
     /*std::vector<Enemy*> ennemyNiveau1;
@@ -90,11 +83,6 @@ void GameManager::PlayGame()
 
     entityMenu.push_back(&button);
 
-    std::vector<Entity*> level1;
-
-    level1.push_back(&player);
-    level1.push_back(&base);
-
     std::vector< sf::Vector2f> posEnnemy;
     posEnnemy.push_back(sf::Vector2f(0.f, 0.f));
     posEnnemy.push_back(sf::Vector2f(100.f, 0.f));
@@ -103,7 +91,7 @@ void GameManager::PlayGame()
     posEnnemy.push_back(sf::Vector2f(400.f, 0.f));
 
     Scene menus = {entityMenu , false ,ecran};
-    Scene* niveau1 = new Scene(posEnnemy, level1, true, map);
+    Scene* niveau1 = new Scene(posEnnemy, true, map);
     std::vector<Scene*> levels;
     levels.push_back(niveau1);
     SceneManager sceneManager = {&menus, levels, niveau1};
@@ -126,17 +114,8 @@ void GameManager::PlayGame()
             if (event.type == sf::Event::KeyPressed && sceneManager.GetCurrentScene()->GetIsFight())
             {
                 //walk
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))//Z
-                    player.Move(sf::Keyboard::Z);
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))//Q
-                    player.Move(sf::Keyboard::Q);
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))//S
-                    player.Move(sf::Keyboard::S);
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))//D
-                    player.Move(sf::Keyboard::D);
+                //std::cout << "1" << std::endl;
+                sceneManager.GetCurrentScene()->GetPlayer()->MovePlayer(event);
 
             }
             else if (event.type == sf::Event::MouseButtonPressed)
@@ -176,12 +155,7 @@ void GameManager::PlayGame()
                     if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
                     {
                         delete niveau1;
-                        niveau1 = new Scene(posEnnemy, level1, true, map);
-                        player = { sf::IntRect(230, 510, 90, 90),
-                                   sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
-
-                        base = { sf::IntRect(76, 313, 360, 76),
-                                 sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10 };
+                        niveau1 = new Scene(posEnnemy, true, map);
 
                         sceneManager.ChangeScene(niveau1);
                     }
@@ -202,13 +176,13 @@ void GameManager::PlayGame()
              {
                  Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
                          sf::Vector2f(0.5f, 0.5f),
-                         player.getPosition(), 5, true , sf::Vector2f(0.f, -5.f) };
+                         sceneManager.GetCurrentScene()->GetPlayer()->getPosition(), 5, true , sf::Vector2f(0.f, -5.f) };
                  Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
                      sf::Vector2f(0.5f, 0.5f),
-                     sf::Vector2f(player.getPosition().x + 35, player.getPosition().y), 5, true , sf::Vector2f(0.f, -5.f) };
+                     sf::Vector2f(sceneManager.GetCurrentScene()->GetPlayer()->getPosition().x + 35, sceneManager.GetCurrentScene()->GetPlayer()->getPosition().y), 5, true , sf::Vector2f(0.f, -5.f) };
                  Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
                      sf::Vector2f(0.5f, 0.5f),
-                     sf::Vector2f(player.getPosition().x + 70, player.getPosition().y), 5, true , sf::Vector2f(0.f, -5.f) };
+                     sf::Vector2f(sceneManager.GetCurrentScene()->GetPlayer()->getPosition().x + 70, sceneManager.GetCurrentScene()->GetPlayer()->getPosition().y), 5, true , sf::Vector2f(0.f, -5.f) };
 
                  sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet1));
                  sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet2));

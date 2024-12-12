@@ -1,6 +1,8 @@
 #include "Scene.h"
 #include "GameManager.h"
 #include "Sproket.h"
+#include "Player.h"
+#include "Base.h"
 
 //Scene::Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map)
 //{
@@ -13,7 +15,7 @@
 //    mMap = map;
 //}
 
-Scene::Scene(std::vector< sf::Vector2f> posEnnemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map)
+Scene::Scene(std::vector< sf::Vector2f> posEnnemy, bool isFight, sf::Sprite map)
 {
     for (int i = 0; i < posEnnemy.size(); i++)
     {
@@ -21,11 +23,16 @@ Scene::Scene(std::vector< sf::Vector2f> posEnnemy, std::vector<Entity*> entity, 
                  sf::Vector2f(1.f, 1.f), posEnnemy[i], 200, sf::Vector2f(0.f, 0.8f)};
         mEnnemy.push_back(sproket1);
     }
-    mEntity = entity;
     std::vector<Bullet*> bullet;
     mBullet = bullet;
     mIsFight = isFight;
     mMap = map;
+    mPlayer = { sf::IntRect(230, 510, 90, 90),
+                     sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
+    mBase = { sf::IntRect(76, 313, 360, 76),
+                 sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10 };
+    mEntity.push_back(&mBase);
+    mEntity.push_back(&mPlayer);
 }
 
 Scene::Scene(std::vector<Entity*> entity, bool isFight, sf::Sprite map)
@@ -98,12 +105,12 @@ void Scene::Updates()
         {
             sf::FloatRect enemyBounds = mEnnemy[j].GetSprite()->getGlobalBounds();
             sf::FloatRect globalEnemyBounds = mEnnemy[j].getTransform().transformRect(enemyBounds);
-            sf::FloatRect baseBounds = mEntity[1]->GetSprite()->getGlobalBounds();
-            sf::FloatRect globalBaseBounds = mEntity[1]->getTransform().transformRect(baseBounds);
+            sf::FloatRect baseBounds = mEntity[0]->GetSprite()->getGlobalBounds();
+            sf::FloatRect globalBaseBounds = mEntity[0]->getTransform().transformRect(baseBounds);
             if (globalEnemyBounds.intersects(globalBaseBounds))
             {
                 //std::cout << "test" << std::endl;
-                mEntity[1]->TakeDamage(5);
+                mEntity[0]->TakeDamage(5);
                 mEnnemy.erase(mEnnemy.begin() + j);
             }
         }
@@ -143,7 +150,12 @@ bool Scene::GetIsFight()
 
 float Scene::GetHPBase()
 {
-    return mEntity[1]->GetHP();
+    return mEntity[0]->GetHP();
+}
+
+Player* Scene::GetPlayer()
+{
+    return &mPlayer;
 }
 
 void Scene::Reset()

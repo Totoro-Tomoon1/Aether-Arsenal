@@ -12,7 +12,6 @@ public:
 	Entity(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, float maxHP);
 	Entity(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position);
 
-	void Move(int keyCode);
 	void SetSprite();
 	sf::Sprite* GetSprite();
 
