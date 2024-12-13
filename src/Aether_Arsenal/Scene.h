@@ -15,6 +15,7 @@ class Base;
 class Scene
 {
 	std::vector<Enemy> mEnemy;
+	//std::vector<Boss> mBosses;
 	std::vector<std::vector<sf::Vector2f>> mAllPos;
 	std::vector<Entity*> mEntity;
 	std::vector<Bullet*> mBullet;

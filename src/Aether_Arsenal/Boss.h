@@ -1,23 +1,30 @@
 #pragma once
 #include "Enemy.h"
 #include "Life.h"
+#include <iostream>
 
-class Boss : public Enemy, public Life
+class Boss : public Enemy
 {
+	std::vector<sf::Vector2f> mMovePos = {
+		sf::Vector2f(15.f, 15.f),
+		sf::Vector2f(55.f, 45.f),
+		sf::Vector2f(55.f, 15.f),
+		sf::Vector2f(15.f, 45.f),
+	};
+	int mNextPos;
+
 	//1 sproket toues les 3s
 	sf::Clock mSpawnCooldown;
-	float mDeltaTime;
+	float mSpawnDTm;
 	bool mCanSpawn;
-
-
-	sf::Clock mSliderMove;
 
 
 public:
 	Boss(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, float maxHP, sf::Vector2f move);
 
 	void SpawnSproket();
-	void Move();
+	sf::Vector2f GetMove() override;
+	sf::Vector2f GetNextPos();//je suis pas sur de l'utilité
 
 };
 
