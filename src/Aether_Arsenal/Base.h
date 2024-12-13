@@ -1,9 +1,8 @@
 #pragma once
 #include "Entity.h"
-#include "Life.h"
 #include "SFML/Graphics.hpp"
 
-class Base : public Entity , public Life
+class Base : public Entity
 {
 
 public:
