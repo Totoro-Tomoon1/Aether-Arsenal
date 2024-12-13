@@ -28,6 +28,22 @@ class Scene
 				 sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10 };
 	int mCurrentWave;
 
+	sf::Clock mClockImmune;
+	float mPlayerImmune;
+	bool mPlayerIsImmune;
+
+	sf::Clock mClockDead;
+	float mPlayerDead;
+	bool mPlayerIsDead;
+
+	sf::Clock mClockBullet;
+	float mBulletFloat;
+	bool mBulletBool;
+
+	sf::Font mFont;
+	sf::Text mScoreText;
+	int mScore = 0;
+
 public:
 	//Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map);
 	Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf::Sprite map);
@@ -39,8 +55,7 @@ public:
 	bool GetIsFight();
 	float GetHPBase();
 	Player* GetPlayer();
-	void Reset();
 	void GenerateNextWave();
-	void Init(int wave);
+	void Init();
 };
 

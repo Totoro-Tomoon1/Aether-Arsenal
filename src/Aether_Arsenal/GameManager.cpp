@@ -84,7 +84,10 @@ void GameManager::PlayGame()
                 sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 525.f) };
 
     Button buttonRetry = { 2, sf::IntRect(508, 205, 414, 116),
-                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 325.f) };
+                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 525.f) };
+
+    Button buttonMenu = { 1, sf::IntRect(515, 40, 416, 120),
+                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 725.f) };
 
     entityMenu.push_back(&button);
 
@@ -93,6 +96,7 @@ void GameManager::PlayGame()
 
     entityGameOver.push_back(&textOver);
     entityGameOver.push_back(&buttonRetry);
+    entityGameOver.push_back(&buttonMenu);
 
     /*std::vector< sf::Vector2f> posEnnemy;
     posEnnemy.push_back(sf::Vector2f(0.f, 0.f));
@@ -230,12 +234,11 @@ void GameManager::PlayGame()
                 //        sceneManager.ChangeScene(niveau1);
                 //   }
                 //}
-            }
-           
+            }          
 
         }
 
-         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight())
+         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight() && sceneManager.GetCurrentScene()->GetPlayer()->GetHP() > 0)
          {
              if (!isPaused)
              {

@@ -1,4 +1,5 @@
 #include "Entity.h"
+//#include "SceneManager.h"
 
 Entity::Entity(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, float maxHP) : Life(maxHP)
 {
@@ -74,4 +75,8 @@ sf::Sprite* Entity::GetSprite()
 std::string Entity::GetType() const
 {
 	return "Entity";
+}
+
+void Entity::Action(SceneManager* scenemanager) const
+{
 }

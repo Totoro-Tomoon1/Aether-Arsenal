@@ -9,7 +9,7 @@ class Button : public Entity
 public:
 	Button(int type, sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position);
 
-	void Action(SceneManager &scenemanager);
+	void Action(SceneManager* scenemanager) const override;
 	std::string GetType() const override;
 };
 

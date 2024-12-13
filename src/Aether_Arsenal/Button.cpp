@@ -6,16 +6,18 @@ Button::Button(int type, sf::IntRect rect, sf::Vector2f scale, sf::Vector2f posi
 	mType = type;
 }
 
-void Button::Action(SceneManager &scenemanager)
+void Button::Action(SceneManager* scenemanager) const
 {
 	switch (mType)
 	{
 	case 1:
-		scenemanager.ChangeScene(scenemanager.GetMenu());
+		std::cout << "return menu" << std::endl;
+		scenemanager->ChangeScene(scenemanager->GetMenu());
 		break;
 
 	case 2:
-		scenemanager.ChangeScene(scenemanager.GetLevel()[0]);
+		std::cout << "return level" << std::endl;
+		scenemanager->ChangeScene(scenemanager->GetLevel()[0]);
 		break;
 	}
 }
