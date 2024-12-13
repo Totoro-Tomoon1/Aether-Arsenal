@@ -78,20 +78,77 @@ void GameManager::PlayGame()
 
     //std::vector<Entity*> menu;
 
-    Entity button = { sf::IntRect(781, 470, 354, 150),
+    Entity button = {sf::IntRect(781, 470, 354, 150),
                 sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 325.f) };
 
     entityMenu.push_back(&button);
 
-    std::vector< sf::Vector2f> posEnnemy;
+    /*std::vector< sf::Vector2f> posEnnemy;
     posEnnemy.push_back(sf::Vector2f(0.f, 0.f));
     posEnnemy.push_back(sf::Vector2f(100.f, 0.f));
     posEnnemy.push_back(sf::Vector2f(200.f, 0.f));
     posEnnemy.push_back(sf::Vector2f(300.f, 0.f));
-    posEnnemy.push_back(sf::Vector2f(400.f, 0.f));
+    posEnnemy.push_back(sf::Vector2f(400.f, 0.f));*/
+
+    //wave1
+    std::vector< sf::Vector2f> posEnemyLvl1;
+    posEnemyLvl1.push_back(sf::Vector2f(156.f, 0.f));
+    posEnemyLvl1.push_back(sf::Vector2f(256.f, 0.f));
+    posEnemyLvl1.push_back(sf::Vector2f(356.f, 0.f));
+
+    //wave2
+    std::vector< sf::Vector2f> posEnemyLvl2;
+    posEnemyLvl2.push_back(sf::Vector2f(156.f, 0.f));
+    posEnemyLvl2.push_back(sf::Vector2f(256.f, 0.f));
+    posEnemyLvl2.push_back(sf::Vector2f(356.f, 0.f));
+
+    posEnemyLvl2.push_back(sf::Vector2f(86.f, -150.f));
+    posEnemyLvl2.push_back(sf::Vector2f(0.f, -150.f));
+    posEnemyLvl2.push_back(sf::Vector2f(306.f, -150.f));
+
+    //wave3
+    std::vector< sf::Vector2f> posEnemyLvl3;
+    posEnemyLvl3.push_back(sf::Vector2f(156.f, 0.f));
+    posEnemyLvl3.push_back(sf::Vector2f(256.f, 0.f));
+    posEnemyLvl3.push_back(sf::Vector2f(356.f, 0.f));
+
+    posEnemyLvl3.push_back(sf::Vector2f(86.f, -150.f));
+    posEnemyLvl3.push_back(sf::Vector2f(0.f, -150.f));
+    posEnemyLvl3.push_back(sf::Vector2f(306.f, -150.f));
+
+    posEnemyLvl3.push_back(sf::Vector2f(56.f, -300.f));
+    posEnemyLvl3.push_back(sf::Vector2f(156.f, -300.f));
+    posEnemyLvl3.push_back(sf::Vector2f(456.f, -300.f));
+
+    //wave4
+    std::vector< sf::Vector2f> posEnemyLvl4;
+    posEnemyLvl4.push_back(sf::Vector2f(156.f, 0.f));
+    posEnemyLvl4.push_back(sf::Vector2f(256.f, 0.f));
+    posEnemyLvl4.push_back(sf::Vector2f(356.f, 0.f));
+
+    posEnemyLvl4.push_back(sf::Vector2f(86.f, -150.f));
+    posEnemyLvl4.push_back(sf::Vector2f(0.f, -150.f));
+    posEnemyLvl4.push_back(sf::Vector2f(306.f, -150.f));
+
+    posEnemyLvl4.push_back(sf::Vector2f(56.f, -300.f));
+    posEnemyLvl4.push_back(sf::Vector2f(156.f, -350.f));
+    posEnemyLvl4.push_back(sf::Vector2f(456.f, -325.f));
+
+    posEnemyLvl4.push_back(sf::Vector2f(56.f, -500.f));
+    posEnemyLvl4.push_back(sf::Vector2f(156.f, -450.f));
+    posEnemyLvl4.push_back(sf::Vector2f(456.f, -490.f));
+
+    std::vector<std::vector<sf::Vector2f>> EnemiesPos;
+
+    EnemiesPos.push_back(posEnemyLvl1);
+    EnemiesPos.push_back(posEnemyLvl2);
+    EnemiesPos.push_back(posEnemyLvl3);
+    EnemiesPos.push_back(posEnemyLvl4);
+
+    int wave = 1;
 
     Scene menus = {entityMenu , false ,ecran};
-    Scene* niveau1 = new Scene(posEnnemy, true, map);
+    Scene* niveau1 = new Scene(EnemiesPos, true, map);
     std::vector<Scene*> levels;
     levels.push_back(niveau1);
     SceneManager sceneManager = {&menus, levels, niveau1};
@@ -155,7 +212,7 @@ void GameManager::PlayGame()
                     if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
                     {
                         delete niveau1;
-                        niveau1 = new Scene(posEnnemy, true, map);
+                        niveau1 = new Scene(EnemiesPos, true, map);
 
                         sceneManager.ChangeScene(niveau1);
                     }

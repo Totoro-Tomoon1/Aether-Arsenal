@@ -13,7 +13,8 @@ class Base;
 
 class Scene
 {
-	std::vector<Enemy> mEnnemy;
+	std::vector<Enemy> mEnemy;
+	std::vector<std::vector<sf::Vector2f>> mAllPos;
 	std::vector<Entity*> mEntity;
 	std::vector<Bullet*> mBullet;
 	bool mIsFinish;
@@ -23,10 +24,11 @@ class Scene
 					 sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
 	Base mBase = { sf::IntRect(76, 313, 360, 76),
 				 sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10 };
+	int mCurrentWave;
 
 public:
 	//Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map);
-	Scene(std::vector< sf::Vector2f> posEnnemy, bool isFight, sf::Sprite map);
+	Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf::Sprite map);
 	Scene(std::vector<Entity*> entity, bool isFight, sf::Sprite map);
 
 	std::vector<Bullet*>* GetMBullet();
@@ -36,5 +38,6 @@ public:
 	float GetHPBase();
 	Player* GetPlayer();
 	void Reset();
+	void GenerateNextWave();
 };
 
