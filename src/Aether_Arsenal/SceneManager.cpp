@@ -19,3 +19,18 @@ Scene* SceneManager::GetCurrentScene()
 {
 	return mCurrentScene;
 }
+
+Scene* SceneManager::GetMenu()
+{
+	return mMenu;
+}
+
+Scene* SceneManager::GetGameOver()
+{
+	return mGameOver;
+}
+
+std::vector<Scene*> SceneManager::GetLevel()
+{
+	return mLevels;
+}

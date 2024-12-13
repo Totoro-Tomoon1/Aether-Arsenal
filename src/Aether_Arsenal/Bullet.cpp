@@ -21,3 +21,8 @@ sf::Vector2f Bullet::GetSpeed()
 {
 	return mSpeed;
 }
+
+std::string Bullet::GetType() const
+{
+	return "Bullet";
+}

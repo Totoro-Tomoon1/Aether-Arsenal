@@ -6,6 +6,7 @@
 #include "Bullet.h"
 #include "Scene.h"
 #include "SceneManager.h"
+#include "Button.h"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -66,6 +67,7 @@ void GameManager::PlayGame()
 
     //ennemie test
     std::vector<Entity*> entityMenu;
+    std::vector<Entity*> entityGameOver;
     /*std::vector<Enemy*> ennemyNiveau1;
 
     Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
@@ -78,10 +80,19 @@ void GameManager::PlayGame()
 
     //std::vector<Entity*> menu;
 
-    Entity button = {sf::IntRect(781, 470, 354, 150),
+    Button button = {2, sf::IntRect(781, 470, 354, 150),
+                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 525.f) };
+
+    Button buttonRetry = { 2, sf::IntRect(508, 205, 414, 116),
                 sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 325.f) };
 
     entityMenu.push_back(&button);
+
+    Entity textOver = { sf::IntRect(509, 391, 377, 63),
+                sf::Vector2f(1.f, 1.f), sf::Vector2f(105.f, 325.f) };
+
+    entityGameOver.push_back(&textOver);
+    entityGameOver.push_back(&buttonRetry);
 
     /*std::vector< sf::Vector2f> posEnnemy;
     posEnnemy.push_back(sf::Vector2f(0.f, 0.f));
@@ -149,9 +160,10 @@ void GameManager::PlayGame()
 
     Scene menus = {entityMenu , false ,ecran};
     Scene* niveau1 = new Scene(EnemiesPos, true, map);
+    Scene* gameOver = new Scene(entityGameOver, false, map);
     std::vector<Scene*> levels;
     levels.push_back(niveau1);
-    SceneManager sceneManager = {&menus, levels, niveau1};
+    SceneManager sceneManager = {&menus, levels, gameOver};
 
     sf::Clock clock;
     bool isPaused = false;
@@ -200,23 +212,24 @@ void GameManager::PlayGame()
                 //    ptrbullets.push_back(newBullet2);
                 //    ptrbullets.push_back(newBullet3);*/
                 //}
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight() == false)
-                {
-                    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                
+                //if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight() == false)
+                //{
+                //    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
-                    // Récupérer la boîte englobante du sprite
-                    sf::FloatRect buttonBounds = button.GetSprite()->getGlobalBounds();
-                    sf::FloatRect globalButtonBounds = button.getTransform().transformRect(buttonBounds);
+                //    // Récupérer la boîte englobante du sprite
+                //    sf::FloatRect buttonBounds = button.GetSprite()->getGlobalBounds();
+                //    sf::FloatRect globalButtonBounds = button.getTransform().transformRect(buttonBounds);
 
-                    // Vérifier si la position de la souris est dans la boîte englobante du sprite
-                    if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
-                    {
-                        delete niveau1;
-                        niveau1 = new Scene(EnemiesPos, true, map);
+                //    // Vérifier si la position de la souris est dans la boîte englobante du sprite
+                //    if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
+                //    {
+                //        delete niveau1;
+                //        niveau1 = new Scene(EnemiesPos, true, map);
 
-                        sceneManager.ChangeScene(niveau1);
-                    }
-                }
+                //        sceneManager.ChangeScene(niveau1);
+                //   }
+                //}
             }
            
 
@@ -253,7 +266,7 @@ void GameManager::PlayGame()
          {
              if (sceneManager.GetCurrentScene()->GetHPBase() <= 0)
              {
-                 sceneManager.ChangeScene(&menus);
+                 sceneManager.ChangeScene(gameOver);
              }
          }
 
@@ -275,7 +288,7 @@ void GameManager::PlayGame()
         //}
 
 
-        sceneManager.GetCurrentScene()->Updates();
+        sceneManager.GetCurrentScene()->Updates(&sceneManager);
 
         //std::cout << ptrbullets.size() << std::endl;
         window.clear(sf::Color::Black);

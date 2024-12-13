@@ -14,6 +14,7 @@ public:
 
 	void SetSprite();
 	sf::Sprite* GetSprite();
+	virtual std::string GetType() const;
 
 
 

@@ -70,3 +70,8 @@ sf::Sprite* Entity::GetSprite()
 {
 	return &mSprite;
 }
+
+std::string Entity::GetType() const
+{
+	return "Entity";
+}

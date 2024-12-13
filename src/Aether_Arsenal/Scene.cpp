@@ -3,6 +3,7 @@
 #include "Sproket.h"
 #include "Player.h"
 #include "Base.h"
+#include "SceneManager.h"
 
 //Scene::Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map)
 //{
@@ -67,8 +68,30 @@ void Scene::GenerateNextWave()
 
 }
 
-void Scene::Updates()
+void Scene::Init(int wave)
 {
+}
+
+void Scene::Updates(SceneManager* sceneManager)
+{
+    for (auto& entity : mEntity)
+    {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && entity->GetType() == "Button")
+        {
+            //std::cout << "test" << std::endl;
+            sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
+            sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+
+            sf::FloatRect buttonBounds = entity->GetSprite()->getGlobalBounds();
+            sf::FloatRect globalButtonBounds = entity->getTransform().transformRect(buttonBounds);
+
+            if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
+            {
+                sceneManager->ChangeScene(sceneManager->GetLevel()[0]);
+            }
+        }
+    }
+
     if (mIsFight)
     {
         if (mEnemy.size() == 0)

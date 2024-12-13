@@ -9,3 +9,8 @@ sf::Vector2f Enemy::GetMove()
 {
 	return mMove;
 }
+
+std::string Enemy::GetType() const
+{
+	return "Enemy";
+}

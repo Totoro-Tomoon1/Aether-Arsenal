@@ -14,5 +14,8 @@ public:
 
 	void ChangeScene(Scene* scene);
 	Scene* GetCurrentScene();
+	Scene* GetMenu();
+	Scene* GetGameOver();
+	std::vector<Scene*> GetLevel();
 };
 

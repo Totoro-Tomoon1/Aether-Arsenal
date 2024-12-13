@@ -4,3 +4,8 @@ Sproket::Sproket(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, fl
 {
 
 }
+
+std::string Sproket::GetType() const
+{
+    return "Sproket";
+}

@@ -6,5 +6,7 @@ class Sproket : public Enemy
 {
 public:
 	Sproket(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, float maxHP, sf::Vector2f move);
+
+	std::string GetType() const override;
 };
 

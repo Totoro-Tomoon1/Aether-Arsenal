@@ -52,6 +52,11 @@ void Player::MovePlayer(sf::Event event)
 	
 }
 
+std::string Player::GetType() const
+{
+	return "Player";
+}
+
 
 
 //void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const

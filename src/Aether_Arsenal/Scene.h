@@ -7,9 +7,11 @@
 #include <iostream>
 #include "Player.h"
 #include "Base.h"
+//#include "SceneManager.h"
 
 class Player;
 class Base;
+class SceneManager;
 
 class Scene
 {
@@ -32,12 +34,13 @@ public:
 	Scene(std::vector<Entity*> entity, bool isFight, sf::Sprite map);
 
 	std::vector<Bullet*>* GetMBullet();
-	void Updates();
+	void Updates(SceneManager* sceneManager);
 	void draw();
 	bool GetIsFight();
 	float GetHPBase();
 	Player* GetPlayer();
 	void Reset();
 	void GenerateNextWave();
+	void Init(int wave);
 };
 
