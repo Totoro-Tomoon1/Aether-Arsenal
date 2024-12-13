@@ -10,7 +10,7 @@ void Player::MovePlayer(sf::Event event)
 {
 	//std::cout << "2" << std::endl;
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Z)//Z
+			if (event.type == sf::Event::KeyPressed && (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))//Z
 			{
 				if (getPosition().y - 25 >= 0)
 				{
@@ -22,7 +22,7 @@ void Player::MovePlayer(sf::Event event)
 					setPosition(getPosition().x, 0);
 			}
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q)//Q
+			if (event.type == sf::Event::KeyPressed && (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))//Q
 			{
 				if (getPosition().x - 25 >= 0)
 					setPosition(getPosition().x - 25, getPosition().y);
@@ -31,7 +31,7 @@ void Player::MovePlayer(sf::Event event)
 					setPosition(0, getPosition().y);
 			}
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)//S
+			if (event.type == sf::Event::KeyPressed && (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))//S
 			{
 				if (getPosition().y + 100 <= GameManager::GetInstance()->GetWindow()->getSize().y)
 					setPosition(getPosition().x, getPosition().y + 25);
@@ -40,7 +40,7 @@ void Player::MovePlayer(sf::Event event)
 					setPosition(getPosition().x, GameManager::GetInstance()->GetWindow()->getSize().y - 90);
 			}
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::D)//D
+			if (event.type == sf::Event::KeyPressed && (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))//D
 			{
 				if (getPosition().x + 125 <= GameManager::GetInstance()->GetWindow()->getSize().x)
 					setPosition(getPosition().x + 25, getPosition().y);

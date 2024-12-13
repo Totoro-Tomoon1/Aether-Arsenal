@@ -3,6 +3,7 @@
 #include "Sproket.h"
 #include "Player.h"
 #include "Base.h"
+#include "Boss.h"
 
 //Scene::Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map)
 //{
@@ -55,7 +56,7 @@ void Scene::GenerateNextWave()
 {
     mCurrentWave++;
 
-    if (mCurrentWave <= 3)
+    /*if (mCurrentWave <= 3)
     {
         for (int i = 0; i < mAllPos[mCurrentWave].size(); i++)
         {
@@ -63,6 +64,13 @@ void Scene::GenerateNextWave()
                      sf::Vector2f(1.f, 1.f), mAllPos[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f) };
             mEnemy.push_back(sproket1);
         }
+    }*/
+
+    if (mCurrentWave == 2)
+    {
+        Boss boss = { sf::IntRect(39, 30, 430, 250),
+                     sf::Vector2f(1.2f, 1.2f), sf::Vector2f(25.f, 25.f), 1000, sf::Vector2f(0.f, 0.f)};
+        mEnemy.push_back(boss);
     }
 
 }
@@ -86,6 +94,7 @@ void Scene::Updates()
         {
             ennemy.move(ennemy.GetMove());
         }
+
 
         for (int i = mBullet.size() - 1; i >= 0; i--)
         {
