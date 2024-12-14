@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Base.h"
 #include "SceneManager.h"
+#include "PowerUp.h"
 #include <stdlib.h>
 
 //Scene::Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map)
@@ -149,6 +150,11 @@ void Scene::Updates(SceneManager* sceneManager)
             GenerateNextWave();
         }
 
+        for (auto& powerUp : mPowerUp)
+        {
+            powerUp->move(powerUp->GetSpeed());
+        }
+
         for (auto& bullet : mBullet)
         {
             bullet->move(bullet->GetSpeed());
@@ -170,9 +176,9 @@ void Scene::Updates(SceneManager* sceneManager)
             int rand = GenerateRandomNumber(0, 199);
             if (rand == 0)
             {
-                Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                Bullet* newBullet = new Bullet{ sf::IntRect(446, 525, 30, 65),
                              sf::Vector2f(0.5f, 0.5f),
-                             ennemy.getPosition(), 1, false , sf::Vector2f(0.f, 5.f) };
+                             sf::Vector2f(ennemy.getPosition().x + 30, ennemy.getPosition().y + 90), 1, false , sf::Vector2f(0.f, 5.f) };
                 mBullet.push_back(newBullet);
                 mBulletBool = false;
             }
@@ -215,6 +221,16 @@ void Scene::Updates(SceneManager* sceneManager)
 
                     if (mEnemy[j].GetHP() <= 0)
                     {
+                       
+                        mScore += 10;
+                        int rand = GenerateRandomNumber(0, 9);
+                        if (rand >= 0)
+                        {
+                            PowerUp* newPowerUp = new PowerUp{ sf::IntRect(981, 145, 96, 94),
+                             sf::Vector2f(0.5f, 0.5f),
+                             mEnemy[j].getPosition(), sf::Vector2f(0.f, 5.f)};
+                            mPowerUp.push_back(newPowerUp);
+                        } 
                         mEnemy.erase(mEnemy.begin() + j);
                     }
                 }
@@ -297,6 +313,12 @@ void Scene::draw()
     {
         //std::cout << "Bullet4 : " << bullet->getPosition().x << "     " << bullet->getPosition().y << std::endl;
         window->draw(*bullet);
+    }
+
+    for (auto& powerUp : mPowerUp)
+    {
+        //std::cout << "Bullet4 : " << bullet->getPosition().x << "     " << bullet->getPosition().y << std::endl;
+        window->draw(*powerUp);
     }
 
     for (auto& ennemy : mEnemy)

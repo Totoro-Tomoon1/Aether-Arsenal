@@ -12,6 +12,7 @@
 class Player;
 class Base;
 class SceneManager;
+class PowerUp;
 
 class Scene
 {
@@ -19,6 +20,7 @@ class Scene
 	std::vector<std::vector<sf::Vector2f>> mAllPos;
 	std::vector<Entity*> mEntity;
 	std::vector<Bullet*> mBullet;
+	std::vector<PowerUp*> mPowerUp;
 	bool mIsFinish;
 	bool mIsFight;
 	sf::Sprite mMap;
