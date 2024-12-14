@@ -297,6 +297,20 @@ void Scene::Updates(SceneManager* sceneManager)
                          sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
         }
 
+        sf::FloatRect playerBounds = mPlayer.GetSprite()->getGlobalBounds();
+        sf::FloatRect globalPlayerBounds = mPlayer.getTransform().transformRect(playerBounds);
+
+        for (int i = mPowerUp.size() - 1; i >= 0; i--)
+        {
+            sf::FloatRect powerUpBounds = mPowerUp[i]->GetSprite()->getGlobalBounds();
+            sf::FloatRect globalPowerUpBounds = mPowerUp[i]->getTransform().transformRect(powerUpBounds);
+
+            if (globalPlayerBounds.intersects(globalPowerUpBounds))
+            {
+                mPowerUp[i]->Upgrade(&mPlayer, &mScore);
+                mPowerUp.erase(mPowerUp.begin() + i);
+            }
+        }
 
         mScoreText.setString("Score: " + std::to_string(mScore));
     }
