@@ -6,11 +6,9 @@ PowerUp::PowerUp(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, sf
 	mSpeed = speed;
 }
 
-void PowerUp::Upgrade(Player* player, int* score)
+void PowerUp::Upgrade(Player* player)
 {
-	std::cout << score << std::endl;
-	*score += 500;
-	std::cout << score << std::endl;
+	player->AddBullet(1);
 }
 
 sf::Vector2f PowerUp::GetSpeed()

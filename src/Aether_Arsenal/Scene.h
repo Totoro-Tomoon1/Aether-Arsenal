@@ -45,6 +45,10 @@ class Scene
 	float mFloatButton;
 	bool mBoolButton;
 
+	sf::Clock mShoot;
+	bool mBoolShoot = false;
+	float mFloatShoot = 0.1f;
+
 	sf::Font mFont;
 	sf::Text mScoreText;
 	int mScore = 0;
@@ -62,4 +66,5 @@ public:
 	void GenerateNextWave();
 	void Init();
 	bool Iswin();
+	void GenerateBullet(int nb);
 };

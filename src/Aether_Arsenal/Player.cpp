@@ -50,3 +50,13 @@ std::string Player::GetType() const
 {
 	return "Player";
 }
+
+int Player::GetNBullet()
+{
+	return mNBullet;
+}
+
+void Player::AddBullet(int nb)
+{
+	mNBullet += nb;
+}

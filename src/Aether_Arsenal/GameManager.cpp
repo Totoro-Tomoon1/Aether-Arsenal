@@ -178,7 +178,7 @@ void GameManager::PlayGame()
 
             }  
         }
-         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight() && sceneManager.GetCurrentScene()->GetPlayer()->GetHP() > 0)
+         /*if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight() && sceneManager.GetCurrentScene()->GetPlayer()->GetHP() > 0)
          {
              if (!isPaused)
              {
@@ -203,7 +203,7 @@ void GameManager::PlayGame()
 
                  isPaused = false;
              }
-         }
+         }*/
          if (sceneManager.GetCurrentScene()->GetIsFight())
          {
              if (sceneManager.GetCurrentScene()->GetHPBase() <= 0)
