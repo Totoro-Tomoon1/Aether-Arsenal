@@ -11,6 +11,7 @@
 Scene::Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf::Sprite map)
 {
     mCurrentWave = 0;
+    mIsFinish = false;
     for (int i = 0; i < posEnnemy[mCurrentWave].size(); i++)
     {
         Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
@@ -39,6 +40,9 @@ Scene::Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf:
     mBulletFloat = 0.1f;
     mBulletBool = false;
 
+    mFloatButton = 0.5f;
+    mBoolButton = false;
+
     if (!mFont.loadFromFile("../../../res/Steam Punk Flyer.ttf"))
     {
         std::cerr << "Impossible de charger la police" << std::endl;
@@ -46,7 +50,7 @@ Scene::Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf:
     }
     mScoreText.setFont(mFont);
     mScoreText.setCharacterSize(30);
-    mScoreText.setFillColor(sf::Color::Magenta);
+    mScoreText.setFillColor(sf::Color::Magenta);        
     mScoreText.setPosition(10, 10);
 }
 
@@ -64,25 +68,23 @@ std::vector<Bullet*>* Scene::GetMBullet()
 
 void Scene::GenerateNextWave()
 {
-    //mCurrentWave++;
+    mCurrentWave++;
 
-    mCurrentWave = 4;
-
-    /*if (mCurrentWave <= 3)
+    if (mCurrentWave <= 3)
     {
         for (int i = 0; i < mAllPos[mCurrentWave].size(); i++)
         {
-            Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
+            Sproket* sproket1 = new Sproket{ sf::IntRect(75, 505, 75, 90),
                      sf::Vector2f(1.f, 1.f), mAllPos[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f) };
             mEnemy.push_back(sproket1);
         }
     }
     else if (mCurrentWave == 4)
-    {*/
+    {
         Boss* boss = new Boss{ sf::IntRect(39, 30, 430, 250),
              sf::Vector2f(1.1f, 1.1f), sf::Vector2f(25.f, 25.f), 1000, sf::Vector2f(0.f, 0.f) };
         mEnemy.push_back(boss);
-    //}
+    }
 
 }
 
@@ -91,7 +93,10 @@ void Scene::Init()
     if (mIsFight)
     {
         mCurrentWave = 0;
+        mIsFinish = false;
         mEnemy.clear();
+        mEntity.clear();
+        mPowerUp.clear();
         for (int i = 0; i < mAllPos[mCurrentWave].size(); i++)
         {
             Sproket* sproket1 = new Sproket { sf::IntRect(75, 505, 75, 90),
@@ -103,9 +108,9 @@ void Scene::Init()
                          sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
         mBase = { sf::IntRect(76, 313, 360, 76),
                      sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10 };
-        mEntity.clear();
         mEntity.push_back(&mBase);
         mEntity.push_back(&mPlayer);
+        mBullet.clear();
 
         mScore = 0;
     }
@@ -116,31 +121,32 @@ bool Scene::Iswin()
     return mIsFinish;
 }
 
-int GenerateRandomNumber(int min, int max)
-{
-    int range = max - min + 1;
-
-    int value = rand() % range + min;
-
-    return value;
-}
-
 void Scene::Updates(SceneManager* sceneManager)
 {
     for (auto& entity : mEntity)
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && entity->GetType() == "Button")
-        {            
-            sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
-            sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
-
-            sf::FloatRect buttonBounds = entity->GetSprite()->getGlobalBounds();
-            sf::FloatRect globalButtonBounds = entity->getTransform().transformRect(buttonBounds);
-
-            if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
+        {
+            if (mBoolButton)
             {
-                std::cout << "test" << std::endl;
-                entity->Action(sceneManager);
+                mBoolButton = false;
+                mCLockButton.restart();
+            }
+            else if (mBoolButton == false && mCLockButton.getElapsedTime().asSeconds() >= mFloatButton)
+            {
+                mBoolButton = true;
+
+                sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
+                sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+
+                sf::FloatRect buttonBounds = entity->GetSprite()->getGlobalBounds();
+                sf::FloatRect globalButtonBounds = entity->getTransform().transformRect(buttonBounds);
+
+                if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
+                {
+                    //std::cout << "test" << std::endl;
+                    entity->Action(sceneManager);
+                }
             }
         }
     }
@@ -166,7 +172,7 @@ void Scene::Updates(SceneManager* sceneManager)
         {
             ennemy->move(ennemy->GetMove());
 
-            int rand = GenerateRandomNumber(0, 199);
+            int rand = GameManager::GetInstance()->GenerateRandomNumber(0, 199);
             if (rand == 0)
             {
                 Bullet* newBullet = new Bullet{ sf::IntRect(446, 525, 30, 65),
@@ -208,8 +214,8 @@ void Scene::Updates(SceneManager* sceneManager)
                     {
                        
                         mScore += 10;
-                        int rand = GenerateRandomNumber(0, 9);
-                        if (rand >= 0)
+                        int rand = GameManager::GetInstance()->GenerateRandomNumber(0, 9);
+                        if (rand == 0)
                         {
                             PowerUp* newPowerUp = new PowerUp{ sf::IntRect(981, 145, 96, 94),
                              sf::Vector2f(0.5f, 0.5f),
@@ -217,7 +223,10 @@ void Scene::Updates(SceneManager* sceneManager)
                             mPowerUp.push_back(newPowerUp);
                         }
                         if (mEnemy[j]->GetType() == "Boss")
-                            mIsFinish == true;
+                        {
+                            mIsFinish = true;
+                            std::cout << "test" << std::endl;
+                        }
                         mEnemy.erase(mEnemy.begin() + j);
                     }
                 }
@@ -300,7 +309,7 @@ void Scene::Updates(SceneManager* sceneManager)
         {
             mEnemy[0]->SpawnSproket(&mEnemy);
         }
-        std::cout << mCurrentWave << std::endl;
+        //std::cout << mCurrentWave << std::endl;
         mScoreText.setString("Score: " + std::to_string(mScore));
     }
     

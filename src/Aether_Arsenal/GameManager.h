@@ -16,6 +16,7 @@ public:
 
 	sf::Texture* GetTexture();
 	sf::RenderWindow* GetWindow();
+	int GenerateRandomNumber(int min, int max);
 
 	void PlayGame();
 };

@@ -41,6 +41,10 @@ class Scene
 	float mBulletFloat;
 	bool mBulletBool;
 
+	sf::Clock mCLockButton;
+	float mFloatButton;
+	bool mBoolButton;
+
 	sf::Font mFont;
 	sf::Text mScoreText;
 	int mScore = 0;

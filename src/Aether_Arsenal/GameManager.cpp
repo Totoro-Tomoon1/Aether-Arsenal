@@ -29,6 +29,14 @@ sf::RenderWindow* GameManager::GetWindow()
 {
     return pWindow;
 }
+int GameManager::GenerateRandomNumber(int min, int max)
+{
+    int range = max - min + 1;
+
+    int value = rand() % range + min;
+
+    return value;
+}
 void GameManager::PlayGame()
 {
     sf::RenderWindow window(sf::VideoMode(550, 900), "Aether Arsenal");
@@ -58,6 +66,7 @@ void GameManager::PlayGame()
     //ennemie test
     std::vector<Entity*> entityMenu;
     std::vector<Entity*> entityGameOver;
+    std::vector<Entity*> entityWin;
 
     Button button = {2, sf::IntRect(781, 470, 354, 150),
                 sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 525.f) };
@@ -69,13 +78,20 @@ void GameManager::PlayGame()
                 sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 725.f) };
 
     entityMenu.push_back(&button);
-
-    Entity textOver = { sf::IntRect(509, 391, 377, 63),
-                sf::Vector2f(1.f, 1.f), sf::Vector2f(105.f, 325.f) };
+    //1162*17 ,1935*633 //773*617 //0.6,
+    Entity textOver = { sf::IntRect(1162, 17, 773, 617),
+                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(40.f, 86.f) };
 
     entityGameOver.push_back(&textOver);
     entityGameOver.push_back(&buttonRetry);
     entityGameOver.push_back(&buttonMenu);
+
+    Entity textWin = { sf::IntRect(495, 1117, 497, 507),
+                sf::Vector2f(0.8f, 0.6f), sf::Vector2f(80.f, 100.f) };
+
+    entityWin.push_back(&textWin);
+    entityWin.push_back(&buttonRetry);
+    entityWin.push_back(&buttonMenu);
 
     //wave1
     std::vector< sf::Vector2f> posEnemyLvl1;
@@ -137,10 +153,11 @@ void GameManager::PlayGame()
     Scene menus = {entityMenu , false ,ecran};
     Scene* niveau1 = new Scene(EnemiesPos, true, map);
     Scene* gameOver = new Scene(entityGameOver, false, map);
+    Scene* win = new Scene(entityWin, false, map);
     //Scene* win = new Scene(entityWin, false, map);
     std::vector<Scene*> levels;
     levels.push_back(niveau1);
-    SceneManager sceneManager = {&menus, levels, gameOver, gameOver};
+    SceneManager sceneManager = {&menus, levels, gameOver, win};
 
     sf::Clock clock;
     bool isPaused = false;
@@ -194,7 +211,7 @@ void GameManager::PlayGame()
                  sceneManager.ChangeScene(gameOver);
              }
              else if (sceneManager.GetCurrentScene()->Iswin())
-                 sceneManager.ChangeScene(gameOver);
+                 sceneManager.ChangeScene(win);
          }
 
          /*if (sceneManager.GetCurrentScene().)
