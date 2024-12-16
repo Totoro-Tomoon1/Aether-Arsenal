@@ -70,12 +70,27 @@ void GameManager::PlayGame()
 
     entityMenu.push_back(&button);
 
-    Entity textOver = { sf::IntRect(509, 391, 377, 63),
-                sf::Vector2f(1.f, 1.f), sf::Vector2f(105.f, 325.f) };
+    Entity textOver = { sf::IntRect(1162, 17, 773, 617),
+                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(43.f, 86.f) };
 
     entityGameOver.push_back(&textOver);
     entityGameOver.push_back(&buttonRetry);
     entityGameOver.push_back(&buttonMenu);
+
+    /*std::vector<Entity*> entityGameOver;
+
+    Button buttonRetry = { 2, sf::IntRect(508, 205, 414, 116),
+                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 525.f) };
+
+    Button buttonMenu = { 1, sf::IntRect(515, 40, 416, 120),
+                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 725.f) };
+
+    Entity textOver = { sf::IntRect(1162, 17, 773, 617),
+                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(43.f, 86.f) };
+
+    entityGameOver.push_back(&textOver);
+    entityGameOver.push_back(&buttonRetry);
+    entityGameOver.push_back(&buttonMenu);*/
 
     //wave1
     std::vector< sf::Vector2f> posEnemyLvl1;

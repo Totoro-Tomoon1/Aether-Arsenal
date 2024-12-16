@@ -87,7 +87,7 @@ void Scene::GenerateNextWave()
     else if (mCurrentWave == 4)
     {*/
         Boss* boss = new Boss{ sf::IntRect(39, 30, 430, 250),
-             sf::Vector2f(1.1f, 1.1f), sf::Vector2f(25.f, 25.f), 1000, sf::Vector2f(0.f, 0.f) };
+             sf::Vector2f(1.05f, 1.05f), sf::Vector2f(20.f, 22.f), 1000, sf::Vector2f(0.25f, 0.4f) };
         mEnemy.push_back(boss);
     //}
 
@@ -259,7 +259,7 @@ void Scene::Updates(SceneManager* sceneManager)
 
             if (globalEnemyBounds.intersects(globalBaseBounds))
             {
-                mEntity[0]->TakeDamage(1);
+                mEntity[0]->TakeDamage(100);//damage base
                 mEnemy.erase(mEnemy.begin() + j);
             }
 
