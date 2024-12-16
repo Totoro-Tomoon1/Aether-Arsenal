@@ -160,7 +160,7 @@ void Scene::Updates(SceneManager* sceneManager)
 
     if (mIsFight)
     {
-        mBaseLife.setTextureRect(sf::IntRect(1503, 657 + (mBase.GetHP() * 40), 428, 40));
+        mBaseLife.setTextureRect(sf::IntRect(1503, 1057 - (mBase.GetHP() * 40), 428, 40));
 
         if (mEnemy.size() == 0)
         {
