@@ -14,4 +14,3 @@ public:
 	sf::Vector2f GetMove();
 	std::string GetType() const override;
 };
-

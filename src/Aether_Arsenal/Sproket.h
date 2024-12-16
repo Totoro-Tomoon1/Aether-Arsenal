@@ -9,4 +9,3 @@ public:
 
 	std::string GetType() const override;
 };
-

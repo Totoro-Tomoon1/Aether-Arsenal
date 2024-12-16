@@ -15,4 +15,3 @@ public:
 	sf::Vector2f GetSpeed();
 	std::string GetType() const override;
 };
-

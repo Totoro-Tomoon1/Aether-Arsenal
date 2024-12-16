@@ -13,4 +13,3 @@ public:
 	void Upgrade(Player* player, int* score);
 	sf::Vector2f GetSpeed();
 };
-

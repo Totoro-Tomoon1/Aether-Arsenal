@@ -7,17 +7,6 @@
 #include "PowerUp.h"
 #include <stdlib.h>
 
-//Scene::Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map)
-//{
-//	mEnnemy = ennemy;
-//    mEntity = entity;
-//    std::vector<Bullet*> bullet;
-//	mBullet = bullet;
-//	mIsFinish = false;
-//    mIsFight = isFight;
-//    mMap = map;
-//}
-
 Scene::Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf::Sprite map)
 {
     mCurrentWave = 0;
@@ -128,7 +117,6 @@ void Scene::Updates(SceneManager* sceneManager)
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && entity->GetType() == "Button")
         {            
-            //std::cout << "test" << std::endl;
             sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
             sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
@@ -158,20 +146,11 @@ void Scene::Updates(SceneManager* sceneManager)
         for (auto& bullet : mBullet)
         {
             bullet->move(bullet->GetSpeed());
-            //std::cout << "Bullet2 : " << bullet->getPosition().x << "     " << bullet->getPosition().y << std::endl;
         }
 
         for (auto& ennemy : mEnemy)
         {
             ennemy.move(ennemy.GetMove());
-
-            /*if (!mBulletBool)
-            {
-                mBulletBool = true;
-                mClockBullet.restart();
-            }
-            else if (mBulletBool && mClockBullet.getElapsedTime().asSeconds() >= mBulletFloat)
-            {*/
 
             int rand = GenerateRandomNumber(0, 199);
             if (rand == 0)
@@ -184,19 +163,14 @@ void Scene::Updates(SceneManager* sceneManager)
             }
             
         }
-
         for (int i = mBullet.size() - 1; i >= 0; i--)
         {
-            //GameManager::GetInstance()->GetWindow()
-            //std::cout << "bullets : " << mBullet[i]->getPosition().y << std::endl;
             if (mBullet[i]->getPosition().y < -20 || mBullet[i]->getPosition().y > 920)
             {
-                //std::cout << "Bullet3 : " << mBullet[i]->getPosition().x << "     " << mBullet[i]->getPosition().y << std::endl;
                 delete (mBullet[i]);
                 mBullet.erase(mBullet.begin() + i);
             }
         }
-        //std::cout << mBullet.size() << std::endl;
         for (int i = mBullet.size() - 1; i >= 0; i--)
         {
             if (mBullet[i]->GetTeam())
@@ -207,12 +181,9 @@ void Scene::Updates(SceneManager* sceneManager)
                     sf::FloatRect globalBulletBounds = mBullet[i]->getTransform().transformRect(bulletBounds);
                     sf::FloatRect enemyBounds = mEnemy[j].GetSprite()->getGlobalBounds();
                     sf::FloatRect globalEnemyBounds = mEnemy[j].getTransform().transformRect(enemyBounds);
-                    //sf::FloatRect ennemyBounds = enn->GetSprite()->getGlobalBounds();
-                    //std::cout << "Bullet: (" << bulletBounds.left << ", " << bulletBounds.top << ", "
-                        //<< bulletBounds.width << ", " << bulletBounds.height << ")\n";
+
                     if (globalBulletBounds.intersects(globalEnemyBounds))
                     {
-                        //std::cout << mBullet.size() << std::endl;
                         mEnemy[j].TakeDamage(mBullet[i]->GetDamage());
                         delete (mBullet[i]);
                         mBullet.erase(mBullet.begin() + i);
@@ -252,7 +223,6 @@ void Scene::Updates(SceneManager* sceneManager)
                 }
             }
         }
-
         for (int j = mEnemy.size() - 1; j >= 0; j--)
         {
             sf::FloatRect enemyBounds = mEnemy[j].GetSprite()->getGlobalBounds();
@@ -266,7 +236,6 @@ void Scene::Updates(SceneManager* sceneManager)
 
             if (globalEnemyBounds.intersects(globalBaseBounds))
             {
-                //std::cout << "test" << std::endl;
                 mEntity[0]->TakeDamage(5);
                 mEnemy.erase(mEnemy.begin() + j);
             }
@@ -311,7 +280,6 @@ void Scene::Updates(SceneManager* sceneManager)
                 mPowerUp.erase(mPowerUp.begin() + i);
             }
         }
-
         mScoreText.setString("Score: " + std::to_string(mScore));
     }
     
@@ -325,13 +293,11 @@ void Scene::draw()
 
     for (auto& bullet : mBullet)
     {
-        //std::cout << "Bullet4 : " << bullet->getPosition().x << "     " << bullet->getPosition().y << std::endl;
         window->draw(*bullet);
     }
 
     for (auto& powerUp : mPowerUp)
     {
-        //std::cout << "Bullet4 : " << bullet->getPosition().x << "     " << bullet->getPosition().y << std::endl;
         window->draw(*powerUp);
     }
 
@@ -344,16 +310,11 @@ void Scene::draw()
     {
         if (entity->GetType() == "Player" && mPlayerIsDead)
         {
-            //std::cout << entity->GetHP() << std::endl;
         }
         else
             window->draw(*entity);
     }
-
-    //if (mIsFight)
-        window->draw(mScoreText);
-    //window->draw(player);
-    //window->draw(sproket1);
+    window->draw(mScoreText);
 }
 
 bool Scene::GetIsFight()

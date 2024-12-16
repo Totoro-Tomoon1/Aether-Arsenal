@@ -13,11 +13,9 @@ protected:
 
 public:
 	static GameManager* GetInstance();
-	//GameManager();
 
 	sf::Texture* GetTexture();
 	sf::RenderWindow* GetWindow();
 
 	void PlayGame();
 };
-

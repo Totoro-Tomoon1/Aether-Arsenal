@@ -12,4 +12,3 @@ public:
 	void MovePlayer(sf::Event event);
 	std::string GetType() const override;
 };
-

@@ -12,4 +12,3 @@ public:
 	void Action(SceneManager* scenemanager) const override;
 	std::string GetType() const override;
 };
-

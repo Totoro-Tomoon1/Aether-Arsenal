@@ -18,4 +18,3 @@ public:
 	Scene* GetGameOver();
 	std::vector<Scene*> GetLevel();
 };
-

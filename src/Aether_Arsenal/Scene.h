@@ -7,7 +7,6 @@
 #include <iostream>
 #include "Player.h"
 #include "Base.h"
-//#include "SceneManager.h"
 
 class Player;
 class Base;
@@ -47,7 +46,6 @@ class Scene
 	int mScore = 0;
 
 public:
-	//Scene(std::vector<Enemy*> ennemy, std::vector<Entity*> entity, bool isFight, sf::Sprite map);
 	Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf::Sprite map);
 	Scene(std::vector<Entity*> entity, bool isFight, sf::Sprite map);
 
@@ -60,4 +58,3 @@ public:
 	void GenerateNextWave();
 	void Init();
 };
-
