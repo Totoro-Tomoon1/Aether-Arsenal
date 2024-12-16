@@ -90,9 +90,9 @@ void Scene::Updates()
             //std::cout << "Bullet2 : " << bullet->getPosition().x << "     " << bullet->getPosition().y << std::endl;
         }
 
-        for (auto& ennemy : mEnemy)
+        for (auto& enemy : mEnemy)
         {
-            ennemy.move(ennemy.GetMove());
+            enemy.move(enemy.GetMove());
         }
 
 

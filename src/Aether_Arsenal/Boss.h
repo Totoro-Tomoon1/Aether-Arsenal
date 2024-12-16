@@ -3,13 +3,18 @@
 
 class Boss : public Enemy
 {
+	std::vector<sf::Vector2f> mMovePos = {
+		sf::Vector2f(15.f, 15.f),
+		sf::Vector2f(55.f, 45.f),
+		sf::Vector2f(55.f, 15.f),
+		sf::Vector2f(15.f, 45.f),
+	};
+	int mNextPos;
+
 	//1 sproket toues les 3s
 	sf::Clock mSpawnCooldown;
-	float mDeltaTime;
+	float mSpawnDTm;
 	bool mCanSpawn;
-
-
-	sf::Clock mSliderMove;
 
 
 public:

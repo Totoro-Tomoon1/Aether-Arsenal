@@ -2,20 +2,20 @@
 
 Boss::Boss(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, float maxHP, sf::Vector2f move) : Enemy(rect, scale, position, maxHP, move)
 {
-	
+    mNextPos = 1;
 }
 
 void Boss::SpawnSproket()
 {
 	mSpawnCooldown.restart();
 
-	mDeltaTime = mSpawnCooldown.restart().asSeconds();
+	mSpawnDTm = mSpawnCooldown.restart().asSeconds();
 
-	mCanSpawn = (mDeltaTime >= 3);
+	mCanSpawn = (mSpawnDTm >= 3);
 
 	if (mCanSpawn)
 	{
-
+        //spawn a faire
 	}
 }
 
