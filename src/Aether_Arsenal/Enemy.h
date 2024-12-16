@@ -13,4 +13,5 @@ public:
 
 	sf::Vector2f GetMove();
 	std::string GetType() const override;
+	virtual void SpawnSproket(std::vector<Enemy*>* mEnemy);
 };

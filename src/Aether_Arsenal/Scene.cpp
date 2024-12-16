@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include "PowerUp.h"
 #include <stdlib.h>
+#include "Boss.h"
 
 Scene::Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf::Sprite map)
 {
@@ -14,7 +15,7 @@ Scene::Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf:
     {
         Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
                  sf::Vector2f(1.f, 1.f), posEnnemy[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f)};
-        mEnemy.push_back(sproket1);
+        mEnemy.push_back(&sproket1);
     }
 
     std::vector<Bullet*> bullet;
@@ -63,9 +64,11 @@ std::vector<Bullet*>* Scene::GetMBullet()
 
 void Scene::GenerateNextWave()
 {
-    mCurrentWave++;
+    //mCurrentWave++;
 
-    if (mCurrentWave <= 3)
+    mCurrentWave = 4;
+
+    /*if (mCurrentWave <= 3)
     {
         for (int i = 0; i < mAllPos[mCurrentWave].size(); i++)
         {
@@ -74,6 +77,12 @@ void Scene::GenerateNextWave()
             mEnemy.push_back(sproket1);
         }
     }
+    else if (mCurrentWave == 4)
+    {*/
+        Boss* boss = new Boss{ sf::IntRect(39, 30, 430, 250),
+             sf::Vector2f(1.1f, 1.1f), sf::Vector2f(25.f, 25.f), 1000, sf::Vector2f(0.f, 0.f) };
+        mEnemy.push_back(boss);
+    //}
 
 }
 
@@ -85,7 +94,7 @@ void Scene::Init()
         mEnemy.clear();
         for (int i = 0; i < mAllPos[mCurrentWave].size(); i++)
         {
-            Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
+            Sproket* sproket1 = new Sproket { sf::IntRect(75, 505, 75, 90),
                      sf::Vector2f(1.f, 1.f), mAllPos[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f) };
             mEnemy.push_back(sproket1);
         }
@@ -100,6 +109,11 @@ void Scene::Init()
 
         mScore = 0;
     }
+}
+
+bool Scene::Iswin()
+{
+    return mIsFinish;
 }
 
 int GenerateRandomNumber(int min, int max)
@@ -150,14 +164,14 @@ void Scene::Updates(SceneManager* sceneManager)
 
         for (auto& ennemy : mEnemy)
         {
-            ennemy.move(ennemy.GetMove());
+            ennemy->move(ennemy->GetMove());
 
             int rand = GenerateRandomNumber(0, 199);
             if (rand == 0)
             {
                 Bullet* newBullet = new Bullet{ sf::IntRect(446, 525, 30, 65),
                              sf::Vector2f(0.5f, 0.5f),
-                             sf::Vector2f(ennemy.getPosition().x + 30, ennemy.getPosition().y + 90), 1, false , sf::Vector2f(0.f, 5.f) };
+                             sf::Vector2f(ennemy->getPosition().x + 30, ennemy->getPosition().y + 90), 1, false , sf::Vector2f(0.f, 5.f) };
                 mBullet.push_back(newBullet);
                 mBulletBool = false;
             }
@@ -179,18 +193,18 @@ void Scene::Updates(SceneManager* sceneManager)
                 {
                     sf::FloatRect bulletBounds = mBullet[i]->GetSprite()->getGlobalBounds();
                     sf::FloatRect globalBulletBounds = mBullet[i]->getTransform().transformRect(bulletBounds);
-                    sf::FloatRect enemyBounds = mEnemy[j].GetSprite()->getGlobalBounds();
-                    sf::FloatRect globalEnemyBounds = mEnemy[j].getTransform().transformRect(enemyBounds);
+                    sf::FloatRect enemyBounds = mEnemy[j]->GetSprite()->getGlobalBounds();
+                    sf::FloatRect globalEnemyBounds = mEnemy[j]->getTransform().transformRect(enemyBounds);
 
                     if (globalBulletBounds.intersects(globalEnemyBounds))
                     {
-                        mEnemy[j].TakeDamage(mBullet[i]->GetDamage());
+                        mEnemy[j]->TakeDamage(mBullet[i]->GetDamage());
                         delete (mBullet[i]);
                         mBullet.erase(mBullet.begin() + i);
                         i--;
                     }
 
-                    if (mEnemy[j].GetHP() <= 0)
+                    if (mEnemy[j]->GetHP() <= 0)
                     {
                        
                         mScore += 10;
@@ -199,9 +213,11 @@ void Scene::Updates(SceneManager* sceneManager)
                         {
                             PowerUp* newPowerUp = new PowerUp{ sf::IntRect(981, 145, 96, 94),
                              sf::Vector2f(0.5f, 0.5f),
-                             mEnemy[j].getPosition(), sf::Vector2f(0.f, 5.f)};
+                             mEnemy[j]->getPosition(), sf::Vector2f(0.f, 5.f)};
                             mPowerUp.push_back(newPowerUp);
-                        } 
+                        }
+                        if (mEnemy[j]->GetType() == "Boss")
+                            mIsFinish == true;
                         mEnemy.erase(mEnemy.begin() + j);
                     }
                 }
@@ -225,8 +241,8 @@ void Scene::Updates(SceneManager* sceneManager)
         }
         for (int j = mEnemy.size() - 1; j >= 0; j--)
         {
-            sf::FloatRect enemyBounds = mEnemy[j].GetSprite()->getGlobalBounds();
-            sf::FloatRect globalEnemyBounds = mEnemy[j].getTransform().transformRect(enemyBounds);
+            sf::FloatRect enemyBounds = mEnemy[j]->GetSprite()->getGlobalBounds();
+            sf::FloatRect globalEnemyBounds = mEnemy[j]->getTransform().transformRect(enemyBounds);
 
             sf::FloatRect baseBounds = mEntity[0]->GetSprite()->getGlobalBounds();
             sf::FloatRect globalBaseBounds = mEntity[0]->getTransform().transformRect(baseBounds);
@@ -236,7 +252,7 @@ void Scene::Updates(SceneManager* sceneManager)
 
             if (globalEnemyBounds.intersects(globalBaseBounds))
             {
-                mEntity[0]->TakeDamage(5);
+                mEntity[0]->TakeDamage(1);
                 mEnemy.erase(mEnemy.begin() + j);
             }
 
@@ -280,6 +296,11 @@ void Scene::Updates(SceneManager* sceneManager)
                 mPowerUp.erase(mPowerUp.begin() + i);
             }
         }
+        if (mCurrentWave == 4 && mEnemy.size() > 0)
+        {
+            mEnemy[0]->SpawnSproket(&mEnemy);
+        }
+        std::cout << mCurrentWave << std::endl;
         mScoreText.setString("Score: " + std::to_string(mScore));
     }
     
@@ -303,7 +324,7 @@ void Scene::draw()
 
     for (auto& ennemy : mEnemy)
     {
-        window->draw(ennemy);
+        window->draw(*ennemy);
     }
 
     for (auto& entity : mEntity)

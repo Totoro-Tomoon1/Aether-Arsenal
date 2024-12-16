@@ -14,3 +14,7 @@ std::string Enemy::GetType() const
 {
 	return "Enemy";
 }
+
+void Enemy::SpawnSproket(std::vector<Enemy*>* mEnemy)
+{
+}

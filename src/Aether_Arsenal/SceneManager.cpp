@@ -1,10 +1,11 @@
 #include "SceneManager.h"
 
-SceneManager::SceneManager(Scene* menu, std::vector<Scene*> levels, Scene* gameOver)
+SceneManager::SceneManager(Scene* menu, std::vector<Scene*> levels, Scene* gameOver, Scene* win)
 {
 	mMenu = menu;
 	mLevels = levels;
 	mGameOver = gameOver;
+	mWin = win;
 	mCurrentScene = menu;
 }
 

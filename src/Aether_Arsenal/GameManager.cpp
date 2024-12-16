@@ -137,9 +137,10 @@ void GameManager::PlayGame()
     Scene menus = {entityMenu , false ,ecran};
     Scene* niveau1 = new Scene(EnemiesPos, true, map);
     Scene* gameOver = new Scene(entityGameOver, false, map);
+    //Scene* win = new Scene(entityWin, false, map);
     std::vector<Scene*> levels;
     levels.push_back(niveau1);
-    SceneManager sceneManager = {&menus, levels, gameOver};
+    SceneManager sceneManager = {&menus, levels, gameOver, gameOver};
 
     sf::Clock clock;
     bool isPaused = false;
@@ -192,7 +193,18 @@ void GameManager::PlayGame()
              {
                  sceneManager.ChangeScene(gameOver);
              }
+             else if (sceneManager.GetCurrentScene()->Iswin())
+                 sceneManager.ChangeScene(gameOver);
          }
+
+         /*if (sceneManager.GetCurrentScene().)
+         {
+             if (sceneManager.GetCurrentScene()->GetHPBase() <= 0)
+             {
+                 sceneManager.ChangeScene(gameOver);
+             }
+         }*/
+
         sceneManager.GetCurrentScene()->Updates(&sceneManager);
 
         window.clear(sf::Color::Black);

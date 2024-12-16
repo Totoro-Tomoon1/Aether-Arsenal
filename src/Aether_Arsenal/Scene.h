@@ -15,7 +15,7 @@ class PowerUp;
 
 class Scene
 {
-	std::vector<Enemy> mEnemy;
+	std::vector<Enemy*> mEnemy;
 	std::vector<std::vector<sf::Vector2f>> mAllPos;
 	std::vector<Entity*> mEntity;
 	std::vector<Bullet*> mBullet;
@@ -57,4 +57,5 @@ public:
 	Player* GetPlayer();
 	void GenerateNextWave();
 	void Init();
+	bool Iswin();
 };
