@@ -30,6 +30,8 @@ class Scene
 				 sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10 };
 	int mCurrentWave;
 
+	sf::Sprite mBaseLife;
+
 	sf::Clock mClockImmune;
 	float mPlayerImmune;
 	bool mPlayerIsImmune;

@@ -48,6 +48,10 @@ Scene::Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf:
     mScoreText.setCharacterSize(30);
     mScoreText.setFillColor(sf::Color::Magenta);
     mScoreText.setPosition(10, 10);
+
+    mBaseLife.setTexture(*GameManager::GetInstance()->GetTexture());
+    mBaseLife.setTextureRect(sf::IntRect(1503, 657, 428, 40));
+    mBaseLife.setPosition(sf::Vector2f(0.f, 860.f));
 }
 
 Scene::Scene(std::vector<Entity*> entity, bool isFight, sf::Sprite map)
@@ -137,7 +141,9 @@ void Scene::Updates(SceneManager* sceneManager)
     for (auto& entity : mEntity)
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && entity->GetType() == "Button")
-        {            
+        {
+            mBaseLife.setTextureRect(sf::IntRect(1503, 657, 428, 40));
+
             sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
             sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
@@ -154,6 +160,8 @@ void Scene::Updates(SceneManager* sceneManager)
 
     if (mIsFight)
     {
+        mBaseLife.setTextureRect(sf::IntRect(1503, 657 + (mBase.GetHP() * 40), 428, 40));
+
         if (mEnemy.size() == 0)
         {
             GenerateNextWave();
@@ -259,8 +267,9 @@ void Scene::Updates(SceneManager* sceneManager)
 
             if (globalEnemyBounds.intersects(globalBaseBounds))
             {
-                mEntity[0]->TakeDamage(100);//damage base
+                mEntity[0]->TakeDamage(5);//damage base
                 mEnemy.erase(mEnemy.begin() + j);
+                //mBaseLife.setTextureRect(sf::IntRect(1503, mBaseLife.getTextureRect().top + 40, 428, 40));
             }
 
             if (globalEnemyBounds.intersects(globalPlayerBounds))
@@ -318,6 +327,7 @@ void Scene::draw()
     sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
 
     window->draw(mMap);
+    
 
     for (auto& bullet : mBullet)
     {
@@ -343,6 +353,7 @@ void Scene::draw()
             window->draw(*entity);
     }
     window->draw(mScoreText);
+    window->draw(mBaseLife);
 }
 
 bool Scene::GetIsFight()
