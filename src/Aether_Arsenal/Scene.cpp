@@ -171,14 +171,14 @@ void Scene::Updates(SceneManager* sceneManager)
 
         for (auto& enemy : mEnemy)
         {
-            ennemy->move(ennemy->GetMove());
+            enemy->move(enemy->GetMove());
 
             int rand = GenerateRandomNumber(0, 199);
             if (rand == 0)
             {
                 Bullet* newBullet = new Bullet{ sf::IntRect(446, 525, 30, 65),
                              sf::Vector2f(0.5f, 0.5f),
-                             sf::Vector2f(ennemy->getPosition().x + 30, ennemy->getPosition().y + 90), 1, false , sf::Vector2f(0.f, 5.f) };
+                             sf::Vector2f(enemy->getPosition().x + 30, enemy->getPosition().y + 90), 1, false , sf::Vector2f(0.f, 5.f) };
                 mBullet.push_back(newBullet);
                 mBulletBool = false;
             }
