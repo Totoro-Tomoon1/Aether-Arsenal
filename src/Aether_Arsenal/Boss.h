@@ -1,8 +1,7 @@
 #pragma once
 #include "Enemy.h"
-#include "Life.h"
 
-class Boss : public Enemy, public Life
+class Boss : public Enemy
 {
 	//1 sproket toues les 3s
 	sf::Clock mSpawnCooldown;
@@ -17,7 +16,7 @@ public:
 	Boss(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, float maxHP, sf::Vector2f move);
 
 	void SpawnSproket();
-	void Move();
+	sf::Vector2f GetMove() override;
 
 };
 

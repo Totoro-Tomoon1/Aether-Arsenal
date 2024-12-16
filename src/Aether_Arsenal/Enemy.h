@@ -11,6 +11,6 @@ protected:
 public:
 	Enemy(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, float maxHP, sf::Vector2f move);
 
-	sf::Vector2f GetMove();
+	virtual sf::Vector2f GetMove();
 };
 

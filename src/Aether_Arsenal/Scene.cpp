@@ -69,7 +69,7 @@ void Scene::GenerateNextWave()
     if (mCurrentWave == 2)
     {
         Boss boss = { sf::IntRect(39, 30, 430, 250),
-                     sf::Vector2f(1.2f, 1.2f), sf::Vector2f(25.f, 25.f), 1000, sf::Vector2f(0.f, 0.f)};
+                     sf::Vector2f(1.f, 1.f), sf::Vector2f(25.f, 20.f), 1000, sf::Vector2f(0.7f, 0.f)};
         mEnemy.push_back(boss);
     }
 
