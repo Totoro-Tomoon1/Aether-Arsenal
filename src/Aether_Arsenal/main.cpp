@@ -8,6 +8,8 @@ int main()
 	_CrtDumpMemoryLeaks();
 #endif
 
+	srand(time(NULL)); //max only
+
 	GameManager::GetInstance()->PlayGame();
 
 	

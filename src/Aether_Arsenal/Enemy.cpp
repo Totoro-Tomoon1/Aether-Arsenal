@@ -9,3 +9,12 @@ sf::Vector2f Enemy::GetMove()
 {
 	return mMove;
 }
+
+std::string Enemy::GetType() const
+{
+	return "Enemy";
+}
+
+void Enemy::SpawnSproket(std::vector<Enemy*>* mEnemy)
+{
+}

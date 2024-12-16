@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include "Life.h"
 
+class SceneManager;
+
 class Entity : public sf::Transformable, public sf::Drawable, public Life
 {
 protected:
@@ -14,9 +16,10 @@ public:
 
 	void SetSprite();
 	sf::Sprite* GetSprite();
+	virtual std::string GetType() const;
+	virtual void Action(SceneManager* scenemanager) const;
 
 
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
-

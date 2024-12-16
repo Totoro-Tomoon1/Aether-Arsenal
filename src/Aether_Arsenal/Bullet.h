@@ -13,5 +13,5 @@ public:
 	float GetDamage();
 	bool GetTeam();
 	sf::Vector2f GetSpeed();
+	std::string GetType() const override;
 };
-
