@@ -36,6 +36,9 @@ int Player::GetNBullet()
 void Player::AddBullet(int nb)
 {
 	mNBullet += nb;
+
+	if (mNBullet > 15)
+		mNBullet == 15;
 }
 
 sf::Vector2f Player::GetMove()

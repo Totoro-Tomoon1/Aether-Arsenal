@@ -56,6 +56,8 @@ class Scene
 	sf::Text mScoreText;
 	int mScore = 0;
 
+	std::vector<sf::Text*> mLeaderBord;
+
 public:
 	Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf::Sprite map);
 	Scene(std::vector<Entity*> entity, bool isFight, sf::Sprite map);

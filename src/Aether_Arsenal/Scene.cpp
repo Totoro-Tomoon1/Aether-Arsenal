@@ -5,7 +5,9 @@
 #include "Base.h"
 #include "SceneManager.h"
 #include "PowerUp.h"
-#include <stdlib.h>
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
 #include "Boss.h"
 
 Scene::Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf::Sprite map)
@@ -459,6 +461,41 @@ void Scene::Updates(SceneManager* sceneManager)
         //std::cout << mCurrentWave << std::endl;
         mScoreText.setString("Score: " + std::to_string(mScore));
     }
+    else
+    {
+        std::ifstream monFlux("../../../res/leaderbord.txt");
+        std::vector<std::string> lignes;
+        std::string ligne;
+        if (monFlux)
+        {
+            while (std::getline(monFlux, ligne)) 
+            {
+                lignes.push_back(ligne);
+            }
+            monFlux.close();
+        }
+        else
+        {
+            std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+        }
+
+        std::vector<sf::Text*> textes;
+        float positionY = 50.0f;
+
+        for (const std::string ligne : lignes) 
+        {
+            //std::cout << ligne << std::endl;
+            sf::Text* texte = new sf::Text();
+            texte->setFont(mFont);
+            texte->setString(ligne);
+            texte->setCharacterSize(240);
+            texte->setFillColor(sf::Color::White);
+            texte->setPosition(50.0f, positionY);
+            textes.push_back(texte);
+            positionY += 40.0f;
+        }
+        mLeaderBord = textes;
+    }
 }
 
 void Scene::draw()
@@ -493,6 +530,15 @@ void Scene::draw()
 
     window->draw(mScoreText);
     window->draw(mBaseLife);
+
+    if (!mIsFight)
+    {
+        for (const sf::Text* texte : mLeaderBord)
+        {
+            window->draw(*texte);
+        }
+    }
+    
 }
 
 bool Scene::GetIsFight()

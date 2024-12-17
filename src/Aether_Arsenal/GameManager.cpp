@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "GameManager.h"
 #include "Player.h"
 #include "Base.h"
@@ -39,6 +40,39 @@ int GameManager::GenerateRandomNumber(int min, int max)
 }
 void GameManager::PlayGame()
 {
+    //std::ifstream monFlux1("../../../res/leaderbord.txt");  //Ouverture d'un fichier en lecture
+
+    //if (monFlux1)
+    //{
+    //    //Tout est prêt pour la lecture.
+    //}
+    //else
+    //{
+    //    std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+    //}
+
+    //std::string ligne1, ligne2;
+    //getline(monFlux1, ligne1); //On lit une ligne complète
+    //getline(monFlux1, ligne2);
+    //std::cout << ligne1 << std::endl;
+    //std::cout << ligne2 << std::endl;
+
+    ////std::fstream monFlux(monFlux.c_str());
+
+    //std::ofstream monFlux("../../../res/leaderbord.txt", std::ios::app);
+
+    //if (monFlux)
+    //{
+    //    monFlux << "Bonjour, je suis une phrase écrite dans un fichier." << std::endl;
+    //    monFlux << 42.1337 << std::endl;
+    //    int age(36);
+    //    monFlux << "J'ai " << age << " ans." << std::endl;
+    //}
+    //else
+    //{
+    //    std::cout << "ERREUR: Impossible d'ouvrir le fichier." << std::endl;
+    //}
+
     sf::RenderWindow window(sf::VideoMode(550, 900), "Aether Arsenal");
     pWindow = &window;
 

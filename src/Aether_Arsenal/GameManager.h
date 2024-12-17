@@ -11,6 +11,8 @@ protected:
 	sf::RenderWindow* pWindow;
 
 
+
+
 public:
 	static GameManager* GetInstance();
 
