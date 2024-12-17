@@ -52,6 +52,10 @@ Scene::Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf:
     mScoreText.setCharacterSize(30);
     mScoreText.setFillColor(sf::Color::Magenta);        
     mScoreText.setPosition(10, 10);
+
+    mBaseLife.setTexture(*GameManager::GetInstance()->GetTexture());
+    mBaseLife.setTextureRect(sf::IntRect(1503, 657, 428, 40));
+    mBaseLife.setPosition(sf::Vector2f(0.f, 860.f));
 }
 
 Scene::Scene(std::vector<Entity*> entity, bool isFight, sf::Sprite map)
@@ -79,10 +83,17 @@ void Scene::GenerateNextWave()
             mEnemy.push_back(sproket1);
         }
     }
+
+    if (mCurrentWave == 2)
+    {
+        Boss boss = { sf::IntRect(39, 30, 430, 250),
+                     sf::Vector2f(1.f, 1.f), sf::Vector2f(25.f, 20.f), 1000, sf::Vector2f(0.7f, 0.f)};
+        mEnemy.push_back(boss);
+    }
     else if (mCurrentWave == 4)
     {
         Boss* boss = new Boss{ sf::IntRect(39, 30, 430, 250),
-             sf::Vector2f(1.1f, 1.1f), sf::Vector2f(25.f, 25.f), 2000, sf::Vector2f(0.f, 0.f) };
+             sf::Vector2f(1.05f, 1.05f), sf::Vector2f(20.f, 22.f), 1000, sf::Vector2f(0.25f, 0.4f) };
         mEnemy.push_back(boss);
     }
 
@@ -235,6 +246,8 @@ void Scene::Updates(SceneManager* sceneManager)
             //std::cout << mEnemy[0]->GetHP() << "          " << mBullet.size() << std::endl;
 
         //std::cout << mEnemy.size() << std::endl;
+        mBaseLife.setTextureRect(sf::IntRect(1503, 1057 - (mBase.GetHP() * 40), 428, 40));
+
         if (mEnemy.size() == 0)
         {
             GenerateNextWave();
@@ -252,16 +265,16 @@ void Scene::Updates(SceneManager* sceneManager)
             bullet->move(bullet->GetSpeed());
         }
 
-        for (auto& ennemy : mEnemy)
+        for (auto& enemy : mEnemy)
         {
-            ennemy->move(ennemy->GetMove());
+            enemy->move(enemy->GetMove());
 
             int rand = GameManager::GetInstance()->GenerateRandomNumber(0, 199);
             if (rand == 0)
             {
                 Bullet* newBullet = new Bullet{ sf::IntRect(446, 525, 30, 65),
                              sf::Vector2f(0.5f, 0.5f),
-                             sf::Vector2f(ennemy->getPosition().x + 30, ennemy->getPosition().y + 90), 1, false , sf::Vector2f(0.f, 5.f) };
+                             sf::Vector2f(enemy->getPosition().x + 30, enemy->getPosition().y + 90), 1, false , sf::Vector2f(0.f, 5.f) };
                 mBullet.push_back(newBullet);
                 mBulletBool = false;
             }
@@ -345,8 +358,9 @@ void Scene::Updates(SceneManager* sceneManager)
 
             if (globalEnemyBounds.intersects(globalBaseBounds))
             {
-                mEntity[0]->TakeDamage(1);
+                mEntity[0]->TakeDamage(5);//damage base
                 mEnemy.erase(mEnemy.begin() + j);
+                //mBaseLife.setTextureRect(sf::IntRect(1503, mBaseLife.getTextureRect().top + 40, 428, 40));
             }
 
             if (globalEnemyBounds.intersects(globalPlayerBounds))
@@ -403,6 +417,7 @@ void Scene::draw()
     sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
 
     window->draw(mMap);
+    
 
     for (auto& bullet : mBullet)
     {
@@ -428,6 +443,7 @@ void Scene::draw()
             window->draw(*entity);
     }
     window->draw(mScoreText);
+    window->draw(mBaseLife);
 }
 
 bool Scene::GetIsFight()

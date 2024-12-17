@@ -7,6 +7,7 @@
 #include <iostream>
 #include "Player.h"
 #include "Base.h"
+#include "Boss.h"
 
 class Player;
 class Base;
@@ -28,6 +29,8 @@ class Scene
 	Base mBase = { sf::IntRect(76, 313, 360, 76),
 				 sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10 };
 	int mCurrentWave;
+
+	sf::Sprite mBaseLife;
 
 	sf::Clock mClockImmune;
 	float mPlayerImmune;

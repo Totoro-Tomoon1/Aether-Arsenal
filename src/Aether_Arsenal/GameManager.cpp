@@ -78,9 +78,9 @@ void GameManager::PlayGame()
                 sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 725.f) };
 
     entityMenu.push_back(&button);
-    //1162*17 ,1935*633 //773*617 //0.6,
+
     Entity textOver = { sf::IntRect(1162, 17, 773, 617),
-                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(40.f, 86.f) };
+                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(43.f, 86.f) };
 
     entityGameOver.push_back(&textOver);
     entityGameOver.push_back(&buttonRetry);
@@ -96,8 +96,8 @@ void GameManager::PlayGame()
     //wave1
     std::vector< sf::Vector2f> posEnemyLvl1;
     posEnemyLvl1.push_back(sf::Vector2f(156.f, 0.f));
-    posEnemyLvl1.push_back(sf::Vector2f(256.f, 0.f));
-    posEnemyLvl1.push_back(sf::Vector2f(356.f, 0.f));
+    //posEnemyLvl1.push_back(sf::Vector2f(256.f, 0.f));
+    //posEnemyLvl1.push_back(sf::Vector2f(356.f, 0.f));
 
     //wave2
     std::vector< sf::Vector2f> posEnemyLvl2;

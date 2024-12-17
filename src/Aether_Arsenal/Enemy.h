@@ -5,13 +5,13 @@
 class Enemy : public Entity
 {
 protected:
-	sf::Vector2f mVector;
+	sf::Vector2f mVector;	//il sert a quoi?
 	sf::Vector2f mMove;
 
 public:
 	Enemy(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, float maxHP, sf::Vector2f move);
 
-	sf::Vector2f GetMove();
+	virtual sf::Vector2f GetMove();
 	std::string GetType() const override;
 	virtual void SpawnSproket(std::vector<Enemy*>* mEnemy);
 };
