@@ -118,22 +118,61 @@ void Scene::Init()
 
 void Scene::GenerateBullet(int nb)
 {
-    int oneBullet[1][2] = { {35, 0} };
     int twoBullet[2][2] = {{20, 0}, {50, 0}};
     int threeBullet[3][2] = {{0, 0}, {35, 0}, {70, 0}};
-    int fourBullet[4][2] = {{20, 0}, {50, 0}, {70, 1}, {0, -1}};
-    int fiveBullet[5][2] = { {5, 0}, {35, 0}, {65, 0}, {-10, -1}, {80, 1} }; 
-    int tenBullet[10][2] = { {20, 0}, {50, 0}, {0, -0.4}, {70, 0.4}, {0, -0.8}, {70, 0.8}, {0, -1.2}, {70, 1.2}, {0, -1.6}, {70, 1.6} };
 
-    for (int i = 0; i < nb; i++)
+    if (nb == 1)
     {
-        int* tab;
-        switch (nb)
+        Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                        sf::Vector2f(0.5f, 0.5f),
+                        sf::Vector2f(mPlayer.getPosition().x + 35, mPlayer.getPosition().y), 10, true , sf::Vector2f(0.f, -5.f) };
+        mBullet.push_back((newBullet));
+    }
+    else
+    {
+        float damage = 1 + ((10 - 1) / nb);
+        std::cout << damage << std::endl;
+        if (nb % 2 == 0)
         {
-        case 1:
-            tab = &oneBullet;
+            for (int i = 0; i < 2; i++)
+            {
+                Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                        sf::Vector2f(0.5f, 0.5f),
+                        sf::Vector2f(mPlayer.getPosition().x + twoBullet[i][0], mPlayer.getPosition().y), damage, true , sf::Vector2f(0.f, -5.f)};
+                mBullet.push_back((newBullet));
+            }
         }
-    
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                        sf::Vector2f(0.5f, 0.5f),
+                        sf::Vector2f(mPlayer.getPosition().x + threeBullet[i][0], mPlayer.getPosition().y), damage, true , sf::Vector2f(0.f, -5.f) };
+                mBullet.push_back((newBullet));
+            }
+        }
+
+        if (nb > 3)
+        {
+            for (int i = 0; 2 + i < nb; i += 2)
+            {
+                Bullet* newBulletl = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                        sf::Vector2f(0.5f, 0.5f),
+                        sf::Vector2f(mPlayer.getPosition().x + 0, mPlayer.getPosition().y), damage, true , sf::Vector2f(-0.4*(1+i/2), -5.f)};
+
+                newBulletl->rotate(-20*(1+i*0.1));
+
+                Bullet* newBulletr = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                        sf::Vector2f(0.5f, 0.5f),
+                        sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), damage, true , sf::Vector2f(0.4 * (1 + i / 2), -5.f) };
+
+                newBulletr->rotate(20*(1+i*0.1));
+
+                mBullet.push_back((newBulletl));
+                mBullet.push_back((newBulletr));
+            }
+        }
     }
 }
 
@@ -183,179 +222,186 @@ void Scene::Updates(SceneManager* sceneManager)
             }
             else if (mBoolShoot && mShoot.getElapsedTime().asSeconds() >= mFloatShoot)
             {
-                switch (mPlayer.GetNBullet())
-                {
-                case 1:
-                {
-                    Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 35, mPlayer.getPosition().y), 10, true , sf::Vector2f(0.f, -5.f) };
-                    mBullet.push_back((newBullet));
-                }
-                break;
-                case 2:
-                {
-                    Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 20, mPlayer.getPosition().y), 6, true , sf::Vector2f(0.f, -5.f) };
-                    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 50, mPlayer.getPosition().y), 6, true , sf::Vector2f(0.f, -5.f) };
-                    mBullet.push_back((newBullet1));
-                    mBullet.push_back((newBullet2));
-                }
-                break;
-                case 3:
-                {
-                    Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x, mPlayer.getPosition().y), 4.5, true , sf::Vector2f(0.f, -5.f) };
+                //switch (mPlayer.GetNBullet())
+                //{
+                //case 1:
+                //{
+                //    GenerateBullet(1);
+                //    /*Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x + 35, mPlayer.getPosition().y), 10, true , sf::Vector2f(0.f, -5.f) };
+                //    mBullet.push_back((newBullet));*/
+                //}
+                //break;
+                //case 2:
+                //{
+                //    GenerateBullet(2);
+                //    /*Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x + 20, mPlayer.getPosition().y), 6, true , sf::Vector2f(0.f, -5.f) };
+                //    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x + 50, mPlayer.getPosition().y), 6, true , sf::Vector2f(0.f, -5.f) };
+                //    mBullet.push_back((newBullet1));
+                //    mBullet.push_back((newBullet2));*/
+                //}
+                //break;
+                //case 3:
+                //{
+                //    GenerateBullet(3);
+                //    /*Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x, mPlayer.getPosition().y), 4.5, true , sf::Vector2f(0.f, -5.f) };
 
-                    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 35, mPlayer.getPosition().y), 4.5, true , sf::Vector2f(0.f, -5.f) };
+                //    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x + 35, mPlayer.getPosition().y), 4.5, true , sf::Vector2f(0.f, -5.f) };
 
-                    Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 4.5, true , sf::Vector2f(0.f, -5.f) };
+                //    Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 4.5, true , sf::Vector2f(0.f, -5.f) };
 
-                    mBullet.push_back((newBullet1));
-                    mBullet.push_back((newBullet2));
-                    mBullet.push_back((newBullet3));
-                }
-                break;
-                case 4:
-                {
-                    Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x + 20, mPlayer.getPosition().y), 4, true , sf::Vector2f(0.f, -5.f) };
+                //    mBullet.push_back((newBullet1));
+                //    mBullet.push_back((newBullet2));
+                //    mBullet.push_back((newBullet3));*/
+                //}
+                //break;
+                //case 4:
+                //{
+                //    GenerateBullet(4);
+                //    /*Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x + 20, mPlayer.getPosition().y), 4, true , sf::Vector2f(0.f, -5.f) };
 
-                    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 50, mPlayer.getPosition().y), 4, true , sf::Vector2f(0.f, -5.f) };
+                //    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x + 50, mPlayer.getPosition().y), 4, true , sf::Vector2f(0.f, -5.f) };
 
-                    Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 4, true , sf::Vector2f(1.f, -5.f) };
+                //    Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 4, true , sf::Vector2f(1.f, -5.f) };
 
-                    newBullet3->rotate(20);
+                //    newBullet3->rotate(20);
 
-                    Bullet* newBullet4 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 0, mPlayer.getPosition().y), 4, true , sf::Vector2f(-1.f, -5.f) };
+                //    Bullet* newBullet4 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x + 0, mPlayer.getPosition().y), 4, true , sf::Vector2f(-1.f, -5.f) };
 
-                    newBullet4->rotate(-20);
+                //    newBullet4->rotate(-20);
 
-                    mBullet.push_back((newBullet1));
-                    mBullet.push_back((newBullet2));
-                    mBullet.push_back((newBullet3));
-                    mBullet.push_back((newBullet4));
-                }
-                break;
-                case 5:
-                {
-                    Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x + 5, mPlayer.getPosition().y), 3.5, true , sf::Vector2f(0.f, -5.f) };
+                //    mBullet.push_back((newBullet1));
+                //    mBullet.push_back((newBullet2));
+                //    mBullet.push_back((newBullet3));
+                //    mBullet.push_back((newBullet4));*/
+                //}
+                //break;
+                //case 5:
+                //{
+                //    GenerateBullet(5);
+                //    /*Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x + 5, mPlayer.getPosition().y), 3.5, true , sf::Vector2f(0.f, -5.f) };
 
-                    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 35, mPlayer.getPosition().y), 3.5, true , sf::Vector2f(0.f, -5.f) };
+                //    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x + 35, mPlayer.getPosition().y), 3.5, true , sf::Vector2f(0.f, -5.f) };
 
-                    Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 65, mPlayer.getPosition().y), 3.5, true , sf::Vector2f(0.f, -5.f) };
+                //    Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x + 65, mPlayer.getPosition().y), 3.5, true , sf::Vector2f(0.f, -5.f) };
 
-                    Bullet* newBullet4 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                        sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x - 10, mPlayer.getPosition().y), 3.5, true , sf::Vector2f(-1.f, -5.f) };
+                //    Bullet* newBullet4 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //        sf::Vector2f(0.5f, 0.5f),
+                //        sf::Vector2f(mPlayer.getPosition().x - 10, mPlayer.getPosition().y), 3.5, true , sf::Vector2f(-1.f, -5.f) };
 
-                    newBullet4->rotate(-20);
+                //    newBullet4->rotate(-20);
 
-                    Bullet* newBullet5 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x + 80, mPlayer.getPosition().y), 3.5, true , sf::Vector2f(1.f, -5.f) };
+                //    Bullet* newBullet5 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x + 80, mPlayer.getPosition().y), 3.5, true , sf::Vector2f(1.f, -5.f) };
 
-                    newBullet5->rotate(20);
+                //    newBullet5->rotate(20);
 
-                    mBullet.push_back((newBullet1));
-                    mBullet.push_back((newBullet2));
-                    mBullet.push_back((newBullet3));
-                    mBullet.push_back((newBullet4));
-                    mBullet.push_back((newBullet5));
-                }
-                break;
-                default:
-                {
-                    Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x + 20, mPlayer.getPosition().y), 3, true , sf::Vector2f(0.f, -5.f) };
-                    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x + 50, mPlayer.getPosition().y), 3, true , sf::Vector2f(0.f, -5.f) };
-
-
-                    Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x, mPlayer.getPosition().y), 3, true , sf::Vector2f(-0.4f, -5.f) };
-                    Bullet* newBullet4 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 3, true , sf::Vector2f(0.4f, -5.f) };
-
-                    newBullet3->rotate(-8);
-                    newBullet4->rotate(8);
+                //    mBullet.push_back((newBullet1));
+                //    mBullet.push_back((newBullet2));
+                //    mBullet.push_back((newBullet3));
+                //    mBullet.push_back((newBullet4));
+                //    mBullet.push_back((newBullet5));*/
+                //}
+                //break;
+                //default:
+                //{
+                //    GenerateBullet(10);
+                //    /*Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x + 20, mPlayer.getPosition().y), 3, true , sf::Vector2f(0.f, -5.f) };
+                //    Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x + 50, mPlayer.getPosition().y), 3, true , sf::Vector2f(0.f, -5.f) };
 
 
-                    Bullet* newBullet5 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x, mPlayer.getPosition().y), 3, true , sf::Vector2f(-0.8f, -5.f) };
-                    Bullet* newBullet6 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 3, true , sf::Vector2f(0.8f, -5.f) };
+                //    Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x, mPlayer.getPosition().y), 3, true , sf::Vector2f(-0.4f, -5.f) };
+                //    Bullet* newBullet4 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 3, true , sf::Vector2f(0.4f, -5.f) };
 
-                    newBullet5->rotate(-16);
-                    newBullet6->rotate(16);
-
-
-                    Bullet* newBullet7 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x, mPlayer.getPosition().y), 3, true , sf::Vector2f(-1.2f, -5.f) };
-                    Bullet* newBullet8 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 3, true , sf::Vector2f(1.2f, -5.f) };
-
-                    newBullet7->rotate(-24);
-                    newBullet8->rotate(24);
+                //    newBullet3->rotate(-8);
+                //    newBullet4->rotate(8);
 
 
-                    Bullet* newBullet9 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x, mPlayer.getPosition().y), 3, true , sf::Vector2f(-1.4f, -5.f) };
-                    Bullet* newBullet10 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                       sf::Vector2f(0.5f, 0.5f),
-                       sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 3, true , sf::Vector2f(1.4f, -5.f) };
+                //    Bullet* newBullet5 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x, mPlayer.getPosition().y), 3, true , sf::Vector2f(-0.8f, -5.f) };
+                //    Bullet* newBullet6 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 3, true , sf::Vector2f(0.8f, -5.f) };
 
-                    newBullet9->rotate(-28);
-                    newBullet10->rotate(28);
+                //    newBullet5->rotate(-16);
+                //    newBullet6->rotate(16);
 
-                    mBullet.push_back((newBullet1));
-                    mBullet.push_back((newBullet2));
-                    mBullet.push_back((newBullet3));
-                    mBullet.push_back((newBullet4));
-                    mBullet.push_back((newBullet5));
-                    mBullet.push_back((newBullet6));
-                    mBullet.push_back((newBullet7));
-                    mBullet.push_back((newBullet8));
-                    mBullet.push_back((newBullet9));
-                    mBullet.push_back((newBullet10));
-                }
-                }
+
+                //    Bullet* newBullet7 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x, mPlayer.getPosition().y), 3, true , sf::Vector2f(-1.2f, -5.f) };
+                //    Bullet* newBullet8 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 3, true , sf::Vector2f(1.2f, -5.f) };
+
+                //    newBullet7->rotate(-24);
+                //    newBullet8->rotate(24);
+
+
+                //    Bullet* newBullet9 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x, mPlayer.getPosition().y), 3, true , sf::Vector2f(-1.4f, -5.f) };
+                //    Bullet* newBullet10 = new Bullet{ sf::IntRect(410, 525, 30, 65),
+                //       sf::Vector2f(0.5f, 0.5f),
+                //       sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), 3, true , sf::Vector2f(1.4f, -5.f) };
+
+                //    newBullet9->rotate(-28);
+                //    newBullet10->rotate(28);
+
+                //    mBullet.push_back((newBullet1));
+                //    mBullet.push_back((newBullet2));
+                //    mBullet.push_back((newBullet3));
+                //    mBullet.push_back((newBullet4));
+                //    mBullet.push_back((newBullet5));
+                //    mBullet.push_back((newBullet6));
+                //    mBullet.push_back((newBullet7));
+                //    mBullet.push_back((newBullet8));
+                //    mBullet.push_back((newBullet9));
+                //    mBullet.push_back((newBullet10));*/
+                //}
+
+                GenerateBullet(mPlayer.GetNBullet());
                 mBoolShoot = false;
             }
         }
 
-        if (mEnemy.size() !=0 )
-            std::cout << mEnemy[0]->GetHP() << "          " << mBullet.size() << std::endl;
+        if (mEnemy.size() != 0)
+            //std::cout << mEnemy[0]->GetHP() << "          " << mBullet.size() << std::endl;
 
         if (mEnemy.size() == 0)
         {
@@ -385,7 +431,7 @@ void Scene::Updates(SceneManager* sceneManager)
                 mBullet.push_back(newBullet);
                 mBulletBool = false;
             }
-            
+
         }
         for (int i = mBullet.size() - 1; i >= 0; i--)
         {
@@ -416,20 +462,20 @@ void Scene::Updates(SceneManager* sceneManager)
 
                     if (mEnemy[j]->GetHP() <= 0)
                     {
-                       
+
                         mScore += 10;
                         int rand = GameManager::GetInstance()->GenerateRandomNumber(0, 9);
                         if (rand >= 0)
                         {
                             PowerUp* newPowerUp = new PowerUp{ sf::IntRect(981, 145, 96, 94),
                              sf::Vector2f(0.5f, 0.5f),
-                             mEnemy[j]->getPosition(), sf::Vector2f(0.f, 5.f)};
+                             mEnemy[j]->getPosition(), sf::Vector2f(0.f, 5.f) };
                             mPowerUp.push_back(newPowerUp);
                         }
                         if (mEnemy[j]->GetType() == "Boss")
                         {
                             mIsFinish = true;
-                            std::cout << "test" << std::endl;
+                            //std::cout << "test" << std::endl;
                         }
                         mEnemy.erase(mEnemy.begin() + j);
                     }
@@ -516,7 +562,6 @@ void Scene::Updates(SceneManager* sceneManager)
         //std::cout << mCurrentWave << std::endl;
         mScoreText.setString("Score: " + std::to_string(mScore));
     }
-    
 }
 
 void Scene::draw()
