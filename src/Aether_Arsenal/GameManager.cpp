@@ -172,11 +172,11 @@ void GameManager::PlayGame()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            if (event.type == sf::Event::KeyPressed && sceneManager.GetCurrentScene()->GetIsFight())
+            /*if (event.type == sf::Event::KeyPressed && sceneManager.GetCurrentScene()->GetIsFight())
             {
                 sceneManager.GetCurrentScene()->GetPlayer()->MovePlayer(event);
 
-            }  
+            }  */
         }
          /*if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight() && sceneManager.GetCurrentScene()->GetPlayer()->GetHP() > 0)
          {

@@ -3,47 +3,24 @@
 
 Player::Player(sf::IntRect rect, sf::Vector2f scale, sf::Vector2f position, float maxHP) : Entity(rect, scale, position, maxHP)
 {
+	mDepl = sf::Vector2f(0.f, 0.f);	
+	sf::Time dt = playermove.restart();
+	playerm = dt.asSeconds();
 }
 
-void Player::MovePlayer(sf::Event event)
+void Player::MovePlayer()
 {
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Z)
-		{
-			if (getPosition().y - 25 >= 0)
-			{
-				setPosition(getPosition().x, getPosition().y - 25);
-			}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+			mDepl = sf::Vector2f(0.f, -7.f);
 
-			else
-				setPosition(getPosition().x, 0);
-		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+			mDepl = sf::Vector2f(-7.f, 0.f);
 
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q)
-		{
-			if (getPosition().x - 25 >= 0)
-				setPosition(getPosition().x - 25, getPosition().y);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			mDepl = sf::Vector2f(0.f, 7.f);
 
-			else
-				setPosition(0, getPosition().y);
-		}
-
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
-		{
-			if (getPosition().y + 100 <= GameManager::GetInstance()->GetWindow()->getSize().y)
-				setPosition(getPosition().x, getPosition().y + 25);
-
-			else
-					setPosition(getPosition().x, GameManager::GetInstance()->GetWindow()->getSize().y - 90);
-		}
-
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::D)//D
-		{
-			if (getPosition().x + 125 <= GameManager::GetInstance()->GetWindow()->getSize().x)
-				setPosition(getPosition().x + 25, getPosition().y);
-
-			else
-				setPosition(GameManager::GetInstance()->GetWindow()->getSize().x - 90, getPosition().y);
-		}	
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			mDepl = sf::Vector2f(7.f, 0.f);
 }
 
 std::string Player::GetType() const
@@ -59,4 +36,14 @@ int Player::GetNBullet()
 void Player::AddBullet(int nb)
 {
 	mNBullet += nb;
+}
+
+sf::Vector2f Player::GetMove()
+{
+	return mDepl;
+}
+
+void Player::SetMove(sf::Vector2f newmove)
+{
+	mDepl = newmove;
 }
