@@ -83,13 +83,6 @@ void Scene::GenerateNextWave()
             mEnemy.push_back(sproket1);
         }
     }
-
-    if (mCurrentWave == 2)
-    {
-        Boss boss = { sf::IntRect(39, 30, 430, 250),
-                     sf::Vector2f(1.f, 1.f), sf::Vector2f(25.f, 20.f), 1000, sf::Vector2f(0.7f, 0.f)};
-        mEnemy.push_back(boss);
-    }
     else if (mCurrentWave == 4)
     {
         Boss* boss = new Boss{ sf::IntRect(39, 30, 430, 250),
@@ -136,7 +129,7 @@ void Scene::GenerateBullet(int nb)
     {
         Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
                         sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 35, mPlayer.getPosition().y), 10, true , sf::Vector2f(0.f, -5.f) };
+                        sf::Vector2f(mPlayer.getPosition().x + 35, mPlayer.getPosition().y - 32.5), 10, true , sf::Vector2f(0.f, -5.f) };
         mBullet.push_back((newBullet));
     }
     else
@@ -149,7 +142,7 @@ void Scene::GenerateBullet(int nb)
             {
                 Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
                         sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + twoBullet[i][0], mPlayer.getPosition().y), damage, true , sf::Vector2f(0.f, -5.f)};
+                        sf::Vector2f(mPlayer.getPosition().x + twoBullet[i][0], mPlayer.getPosition().y - 32.5), damage, true , sf::Vector2f(0.f, -5.f)};
                 mBullet.push_back((newBullet));
             }
         }
@@ -159,7 +152,7 @@ void Scene::GenerateBullet(int nb)
             {
                 Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
                         sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + threeBullet[i][0], mPlayer.getPosition().y), damage, true , sf::Vector2f(0.f, -5.f) };
+                        sf::Vector2f(mPlayer.getPosition().x + threeBullet[i][0], mPlayer.getPosition().y - 32.5), damage, true , sf::Vector2f(0.f, -5.f) };
                 mBullet.push_back((newBullet));
             }
         }
@@ -170,13 +163,13 @@ void Scene::GenerateBullet(int nb)
             {
                 Bullet* newBulletl = new Bullet{ sf::IntRect(410, 525, 30, 65),
                         sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 0, mPlayer.getPosition().y), damage, true , sf::Vector2f(-0.4*(1+i/2), -5.f)};
+                        sf::Vector2f(mPlayer.getPosition().x + 0, mPlayer.getPosition().y - 32.5), damage, true , sf::Vector2f(-0.4*(1+i/2), -5.f)};
 
                 newBulletl->rotate(-20*(1+i*0.1));
 
                 Bullet* newBulletr = new Bullet{ sf::IntRect(410, 525, 30, 65),
                         sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y), damage, true , sf::Vector2f(0.4 * (1 + i / 2), -5.f) };
+                        sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y - 32.5), damage, true , sf::Vector2f(0.4 * (1 + i / 2), -5.f) };
 
                 newBulletr->rotate(20*(1+i*0.1));
 
@@ -185,6 +178,16 @@ void Scene::GenerateBullet(int nb)
             }
         }
     }
+}
+
+bool Scene::Colide(Entity* nb1, Entity* nb2)
+{
+    sf::FloatRect nb1Bounds = nb1->GetSprite()->getGlobalBounds();
+    sf::FloatRect globalNb1Bounds = nb1->getTransform().transformRect(nb1Bounds);
+    sf::FloatRect nb2Bounds = nb2->GetSprite()->getGlobalBounds();
+    sf::FloatRect globalNb2Bounds =nb2->getTransform().transformRect(nb2Bounds);
+
+    return globalNb1Bounds.intersects(globalNb2Bounds);
 }
 
 bool Scene::Iswin()
@@ -198,32 +201,80 @@ void Scene::Updates(SceneManager* sceneManager)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         mPlayer.MovePlayer();
 
-    for (auto& entity : mEntity)
+    mPlayer.move(mPlayer.GetMove());
+
+    //std::cout << mPlayer.getPosition().x << "      " << mPlayer.getPosition().y << std::endl;
+
+    if (mPlayer.getPosition().x < 0)
+        mPlayer.setPosition(0, mPlayer.getPosition().y);
+
+    if (mPlayer.getPosition().y < 0)
+        mPlayer.setPosition(mPlayer.getPosition().x, 0);
+
+    if (mPlayer.getPosition().x > GameManager::GetInstance()->GetWindow()->getSize().x - mPlayer.GetSprite()->getTextureRect().getSize().x)
+        mPlayer.setPosition(GameManager::GetInstance()->GetWindow()->getSize().x - mPlayer.GetSprite()->getTextureRect().getSize().x, mPlayer.getPosition().y);
+
+    if (mPlayer.getPosition().y > GameManager::GetInstance()->GetWindow()->getSize().y - mPlayer.GetSprite()->getTextureRect().getSize().y)
+        mPlayer.setPosition(mPlayer.getPosition().x, GameManager::GetInstance()->GetWindow()->getSize().y - mPlayer.GetSprite()->getTextureRect().getSize().y);
+
+
+    for (Entity* entity : mEntity)
     {
+        //std::cout << entity->GetType() << std::endl;
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && entity->GetType() == "Button")
         {
-            if (mBoolButton)
-            {
-                mBoolButton = false;
-                mCLockButton.restart();
-            }
-            else if (mBoolButton == false && mCLockButton.getElapsedTime().asSeconds() >= mFloatButton)
-            {
+            //if (mBoolButton)
+            //{
+            //    mBoolButton = false;
+            //    mCLockButton.restart();
+            //}
+            //else if (mBoolButton == false && mCLockButton.getElapsedTime().asSeconds() >= mFloatButton)
+            //{
                 mBoolButton = true;
-
                 sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
-                sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
                 sf::FloatRect buttonBounds = entity->GetSprite()->getGlobalBounds();
                 sf::FloatRect globalButtonBounds = entity->getTransform().transformRect(buttonBounds);
 
-                if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
+                sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+                /*std::cout << "mousx= " << mousePos.x << " mousy= " << mousePos.y << std::endl;
+                std::cout << "rect: left= " << globalButtonBounds.left << " top= " << globalButtonBounds.top << " w= " << globalButtonBounds.width << " h= " << globalButtonBounds.height << std::endl;
+                std::cout << globalButtonBounds.contains(mousePos.x, mousePos.y) << std::endl;*/
+
+                if (globalButtonBounds.contains(mousePos.x, mousePos.y))
                 {
-                    //std::cout << "test" << std::endl;
+                    std::cout << "test" << std::endl;
                     entity->Action(sceneManager);
                 }
-            }
+            //}
+            //else if (mBoolButton == false && mCLockButton.getElapsedTime().asSeconds() >= mFloatButton)
+            //{
+            //    mBoolButton = true;
+            //    int topx = entity->getPosition().x;
+            //    int topy = entity->getPosition().y;
+            //}
         }
+
+        //if (entity->GetType() == "Button")
+        //{
+        //    sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
+        //    sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+
+        //    sf::FloatRect buttonBounds = entity->GetSprite()->getGlobalBounds();
+        //    sf::FloatRect globalButtonBounds = entity->getTransform().transformRect(buttonBounds);
+
+        //    //sf::Vector2f mousePos = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+        //    std::cout << "mousx= " << mousePos.x << " mousy= " << mousePos.y << std::endl;
+        //    std::cout << "rect: left= " << globalButtonBounds.left << " top= " << globalButtonBounds.top << " w= " << globalButtonBounds.width << " h= " << globalButtonBounds.height << std::endl;
+
+
+
+
+        //    if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
+        //    {
+        //        std::cout << "detecte" << std::endl;
+        //    }
+        //}
     }
 
     if (mIsFight)
@@ -252,8 +303,6 @@ void Scene::Updates(SceneManager* sceneManager)
         {
             GenerateNextWave();
         }
-
-        mPlayer.move(mPlayer.GetMove());
 
         for (auto& powerUp : mPowerUp)
         {
@@ -294,12 +343,12 @@ void Scene::Updates(SceneManager* sceneManager)
             {
                 for (int j = mEnemy.size() - 1; j >= 0 && i >= 0; j--)
                 {
-                    sf::FloatRect bulletBounds = mBullet[i]->GetSprite()->getGlobalBounds();
+                    /*sf::FloatRect bulletBounds = mBullet[i]->GetSprite()->getGlobalBounds();
                     sf::FloatRect globalBulletBounds = mBullet[i]->getTransform().transformRect(bulletBounds);
                     sf::FloatRect enemyBounds = mEnemy[j]->GetSprite()->getGlobalBounds();
-                    sf::FloatRect globalEnemyBounds = mEnemy[j]->getTransform().transformRect(enemyBounds);
+                    sf::FloatRect globalEnemyBounds = mEnemy[j]->getTransform().transformRect(enemyBounds);*/
 
-                    if (globalBulletBounds.intersects(globalEnemyBounds))
+                    if (Colide(mBullet[i], mEnemy[j]))
                     {
                         mEnemy[j]->TakeDamage(mBullet[i]->GetDamage());
                         delete (mBullet[i]);
@@ -330,13 +379,13 @@ void Scene::Updates(SceneManager* sceneManager)
             }
             else
             {
-                sf::FloatRect bulletBounds = mBullet[i]->GetSprite()->getGlobalBounds();
+                /*sf::FloatRect bulletBounds = mBullet[i]->GetSprite()->getGlobalBounds();
                 sf::FloatRect globalBulletBounds = mBullet[i]->getTransform().transformRect(bulletBounds);
 
                 sf::FloatRect playerBounds = mPlayer.GetSprite()->getGlobalBounds();
-                sf::FloatRect globalPlayerBounds = mPlayer.getTransform().transformRect(playerBounds);
+                sf::FloatRect globalPlayerBounds = mPlayer.getTransform().transformRect(playerBounds);*/
 
-                if (globalBulletBounds.intersects(globalPlayerBounds))
+                if (Colide(mBullet[i], &mPlayer))
                 {
                     mPlayer.TakeDamage(mBullet[i]->GetDamage());
                     delete (mBullet[i]);
@@ -347,23 +396,23 @@ void Scene::Updates(SceneManager* sceneManager)
         }
         for (int j = mEnemy.size() - 1; j >= 0; j--)
         {
-            sf::FloatRect enemyBounds = mEnemy[j]->GetSprite()->getGlobalBounds();
+            /*sf::FloatRect enemyBounds = mEnemy[j]->GetSprite()->getGlobalBounds();
             sf::FloatRect globalEnemyBounds = mEnemy[j]->getTransform().transformRect(enemyBounds);
 
             sf::FloatRect baseBounds = mEntity[0]->GetSprite()->getGlobalBounds();
             sf::FloatRect globalBaseBounds = mEntity[0]->getTransform().transformRect(baseBounds);
 
             sf::FloatRect playerBounds = mPlayer.GetSprite()->getGlobalBounds();
-            sf::FloatRect globalPlayerBounds = mPlayer.getTransform().transformRect(playerBounds);
+            sf::FloatRect globalPlayerBounds = mPlayer.getTransform().transformRect(playerBounds);*/
 
-            if (globalEnemyBounds.intersects(globalBaseBounds))
+            if (Colide(mEnemy[j], mEntity[0]))
             {
-                mEntity[0]->TakeDamage(5);//damage base
+                mEntity[0]->TakeDamage(10);//damage base
                 mEnemy.erase(mEnemy.begin() + j);
                 //mBaseLife.setTextureRect(sf::IntRect(1503, mBaseLife.getTextureRect().top + 40, 428, 40));
             }
 
-            if (globalEnemyBounds.intersects(globalPlayerBounds))
+            if (mEnemy.size() != 0 && Colide(mEnemy[j], &mPlayer))
             {
                 if (mPlayerIsImmune)
                 {
@@ -389,15 +438,15 @@ void Scene::Updates(SceneManager* sceneManager)
                          sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
         }
 
-        sf::FloatRect playerBounds = mPlayer.GetSprite()->getGlobalBounds();
-        sf::FloatRect globalPlayerBounds = mPlayer.getTransform().transformRect(playerBounds);
+        /*sf::FloatRect playerBounds = mPlayer.GetSprite()->getGlobalBounds();
+        sf::FloatRect globalPlayerBounds = mPlayer.getTransform().transformRect(playerBounds);*/
 
         for (int i = mPowerUp.size() - 1; i >= 0; i--)
         {
-            sf::FloatRect powerUpBounds = mPowerUp[i]->GetSprite()->getGlobalBounds();
-            sf::FloatRect globalPowerUpBounds = mPowerUp[i]->getTransform().transformRect(powerUpBounds);
+            /*sf::FloatRect powerUpBounds = mPowerUp[i]->GetSprite()->getGlobalBounds();
+            sf::FloatRect globalPowerUpBounds = mPowerUp[i]->getTransform().transformRect(powerUpBounds);*/
 
-            if (globalPlayerBounds.intersects(globalPowerUpBounds))
+            if (Colide(&mPlayer, mPowerUp[i]))
             {
                 mPowerUp[i]->Upgrade(&mPlayer);
                 mPowerUp.erase(mPowerUp.begin() + i);
@@ -417,12 +466,6 @@ void Scene::draw()
     sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
 
     window->draw(mMap);
-    
-
-    for (auto& bullet : mBullet)
-    {
-        window->draw(*bullet);
-    }
 
     for (auto& powerUp : mPowerUp)
     {
@@ -442,6 +485,12 @@ void Scene::draw()
         else
             window->draw(*entity);
     }
+
+    for (auto& bullet : mBullet)
+    {
+        window->draw(*bullet);
+    }
+
     window->draw(mScoreText);
     window->draw(mBaseLife);
 }

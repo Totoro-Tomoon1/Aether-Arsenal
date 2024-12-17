@@ -39,4 +39,5 @@ std::string Entity::GetType() const
 
 void Entity::Action(SceneManager* scenemanager) const
 {
+
 }

@@ -70,4 +70,5 @@ public:
 	void Init();
 	bool Iswin();
 	void GenerateBullet(int nb);
+	bool Colide(Entity* nb1, Entity* nb2);
 };

@@ -96,8 +96,8 @@ void GameManager::PlayGame()
     //wave1
     std::vector< sf::Vector2f> posEnemyLvl1;
     posEnemyLvl1.push_back(sf::Vector2f(156.f, 0.f));
-    //posEnemyLvl1.push_back(sf::Vector2f(256.f, 0.f));
-    //posEnemyLvl1.push_back(sf::Vector2f(356.f, 0.f));
+    posEnemyLvl1.push_back(sf::Vector2f(256.f, 0.f));
+    posEnemyLvl1.push_back(sf::Vector2f(356.f, 0.f));
 
     //wave2
     std::vector< sf::Vector2f> posEnemyLvl2;
