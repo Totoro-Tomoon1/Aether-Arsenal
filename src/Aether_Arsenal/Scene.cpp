@@ -15,3 +15,20 @@ Scene::Scene( sf::Sprite map)
 {
     mMap = map;
 }
+
+void Scene::Updates(SceneManager* sceneManager)
+{
+    
+}
+
+void Scene::draw()
+{
+    sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
+
+    window->draw(mMap);
+}
+
+std::string Scene::GetType()
+{
+    return "Scene";
+}

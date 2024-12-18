@@ -10,6 +10,8 @@
 #include "Button.h"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "Menu.h"
+#include "Fight.h"
 
 GameManager* GameManager::mInstance = nullptr;
 
@@ -182,13 +184,15 @@ void GameManager::PlayGame()
     EnemiesPos.push_back(posEnemyLvl3);
     EnemiesPos.push_back(posEnemyLvl4);
 
+    std::vector<Entity*> entityLevel;
+
     int wave = 1;
 
-    Scene menus = {entityMenu , false ,ecran};
-    Scene* niveau1 = new Scene(EnemiesPos, true, map);
-    Scene* gameOver = new Scene(entityGameOver, false, map);
-    Scene* win = new Scene(entityWin, false, map);
-    //Scene* win = new Scene(entityWin, false, map);
+    Menu menus = {entityMenu ,ecran};
+    Fight* niveau1 = new Fight(entityLevel, map, EnemiesPos);
+    Menu* gameOver = new Menu(entityGameOver, map);
+    Menu* win = new Menu(entityWin, map);
+
     std::vector<Scene*> levels;
     levels.push_back(niveau1);
     SceneManager sceneManager = {&menus, levels, gameOver, win};
@@ -199,70 +203,20 @@ void GameManager::PlayGame()
 
     while (window.isOpen())
     {
-
         sf::Event event;
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-
-            /*if (event.type == sf::Event::KeyPressed && sceneManager.GetCurrentScene()->GetIsFight())
-            {
-                sceneManager.GetCurrentScene()->GetPlayer()->MovePlayer(event);
-
-            }  */
         }
-         /*if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sceneManager.GetCurrentScene()->GetIsFight() && sceneManager.GetCurrentScene()->GetPlayer()->GetHP() > 0)
-         {
-             if (!isPaused)
-             {
-                 isPaused = true;
-                 clock.restart();
-             }
-             else if (isPaused && clock.getElapsedTime().asSeconds() >= pauseTime)
-             {
-                 Bullet* newBullet1 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                         sf::Vector2f(0.5f, 0.5f),
-                         sceneManager.GetCurrentScene()->GetPlayer()->getPosition(), 5, true , sf::Vector2f(0.f, -5.f) };
-                 Bullet* newBullet2 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                     sf::Vector2f(0.5f, 0.5f),
-                     sf::Vector2f(sceneManager.GetCurrentScene()->GetPlayer()->getPosition().x + 35, sceneManager.GetCurrentScene()->GetPlayer()->getPosition().y), 5, true , sf::Vector2f(0.f, -5.f) };
-                 Bullet* newBullet3 = new Bullet{ sf::IntRect(410, 525, 30, 65),
-                     sf::Vector2f(0.5f, 0.5f),
-                     sf::Vector2f(sceneManager.GetCurrentScene()->GetPlayer()->getPosition().x + 70, sceneManager.GetCurrentScene()->GetPlayer()->getPosition().y), 5, true , sf::Vector2f(0.f, -5.f) };
-
-                 sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet1));
-                 sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet2));
-                 sceneManager.GetCurrentScene()->GetMBullet()->push_back((newBullet3));
-
-                 isPaused = false;
-             }
-         }*/
-         if (sceneManager.GetCurrentScene()->GetIsFight())
-         {
-             if (sceneManager.GetCurrentScene()->GetHPBase() <= 0)
-             {
-                 sceneManager.ChangeScene(gameOver);
-             }
-             else if (sceneManager.GetCurrentScene()->Iswin())
-                 sceneManager.ChangeScene(win);
-         }
-
-         /*if (sceneManager.GetCurrentScene().)
-         {
-             if (sceneManager.GetCurrentScene()->GetHPBase() <= 0)
-             {
-                 sceneManager.ChangeScene(gameOver);
-             }
-         }*/
-
         sceneManager.GetCurrentScene()->Updates(&sceneManager);
+
+        //std::cout << sceneManager.GetCurrentScene()->GetType() << std::endl;
 
         window.clear(sf::Color::Black);
 
         sceneManager.GetCurrentScene()->draw();
 
         window.display();
-
     }
 }

@@ -178,6 +178,11 @@ bool Fight::Colide(Entity* nb1, Entity* nb2)
     return globalNb1Bounds.intersects(globalNb2Bounds);
 }
 
+std::string Fight::GetType()
+{
+    return "Fight";
+}
+
 void Fight::Updates(SceneManager* sceneManager)
 {
     mPlayer.SetMove(sf::Vector2f(0.f, 0.f));

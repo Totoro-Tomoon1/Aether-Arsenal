@@ -9,10 +9,6 @@ protected:
 	sf::Texture mTexture;
 
 	sf::RenderWindow* pWindow;
-
-
-
-
 public:
 	static GameManager* GetInstance();
 

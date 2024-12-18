@@ -52,8 +52,8 @@ class Fight : public Scene
 public:
 	Fight(std::vector<Entity*> entity, sf::Sprite map, std::vector<std::vector<sf::Vector2f>> posEnnemy);
 
-	void Updates(SceneManager* scenemanager);
-	void draw();
+	void Updates(SceneManager* scenemanager) override;
+	void draw() override;
 	std::vector<Bullet*>* GetMBullet();
 	float GetHPBase();
 	Player* GetPlayer();
@@ -62,5 +62,6 @@ public:
 	bool Iswin();
 	void GenerateBullet(int nb);
 	bool Colide(Entity* nb1, Entity* nb2);
+	std::string GetType() override;
 };
 

@@ -12,7 +12,6 @@ SceneManager::SceneManager(Scene* menu, std::vector<Scene*> levels, Scene* gameO
 void SceneManager::ChangeScene(Scene* scene)
 {
 	mCurrentScene = scene;
-	mCurrentScene->Init();
 	std::cout << mMenu << std::endl;
 	std::cout << "test" << mCurrentScene << std::endl;
 }

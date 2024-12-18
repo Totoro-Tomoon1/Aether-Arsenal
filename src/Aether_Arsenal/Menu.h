@@ -7,5 +7,9 @@ class Menu : public Scene
 
 public:
 	Menu(std::vector<Entity*> entity, sf::Sprite map);
+
+	void Updates(SceneManager* scenemanager) override;
+	void draw() override;
+	std::string GetType() override;
 };
 

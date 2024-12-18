@@ -13,8 +13,8 @@ class Scene
 public:
 	//Scene(std::vector<std::vector<sf::Vector2f>> posEnnemy, bool isFight, sf::Sprite map);
 	Scene(sf::Sprite map);
-
-	
-	void Updates(SceneManager* sceneManager);
-	void draw();
+		
+	virtual void Updates(SceneManager* sceneManager);
+	virtual void draw();
+	virtual std::string GetType();
 };

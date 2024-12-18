@@ -1,8 +1,34 @@
 #include "Menu.h"
 
-Menu::Menu(std::vector<Entity*> entity, sf::Sprite map) : Scene( map)
+Menu::Menu(std::vector<Entity*> entity, sf::Sprite map) : Scene(map)
 {
+	mEntity = entity;
+}
 
+void Menu::Updates(SceneManager* scenemanager)
+{
+	sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
+
+	//window->draw
+}
+
+void Menu::draw()
+{
+	Scene::draw();
+
+	sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
+
+	std::cout << mEntity.size() << std::endl;
+
+	for (Entity* entity : mEntity)
+	{
+		window->draw(*entity);
+	}
+}
+
+std::string Menu::GetType()
+{
+	return "Menu";
 }
 
 
