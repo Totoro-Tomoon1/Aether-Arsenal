@@ -1,15 +1,75 @@
 #include "Menu.h"
+#include  "fstream"
+#include "sstream"
 
 Menu::Menu(std::vector<Entity*> entity, sf::Sprite map) : Scene(map)
 {
 	mEntity = entity;
+
+	if (!font.loadFromFile("../../../res/Steam Punk Flyer.ttf")) {
+		std::cerr << "Erreur : Impossible de charger la police !" << std::endl;
+	}
+
+	text.setFont(font);
+	text.setCharacterSize(24);
+	text.setFillColor(sf::Color::White);
+
+	loadLeaderboard("../../../res/leaderbord.txt");
 }
 
-void Menu::Updates(SceneManager* scenemanager)
+void Menu::Updates(SceneManager* sceneManager)
 {
-	sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		for (Entity* entity : mEntity)
+		{
+			sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
 
-	//window->draw
+			sf::FloatRect buttonBounds = entity->GetSprite()->getGlobalBounds();
+			sf::FloatRect globalButtonBounds = entity->getTransform().transformRect(buttonBounds);
+
+			sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+			/*std::cout << "mousx= " << mousePos.x << " mousy= " << mousePos.y << std::endl;
+			std::cout << "rect: left= " << globalButtonBounds.left << " top= " << globalButtonBounds.top << " w= " << globalButtonBounds.width << " h= " << globalButtonBounds.height << std::endl;
+			std::cout << globalButtonBounds.contains(mousePos.x, mousePos.y) << std::endl;*/
+
+			if (globalButtonBounds.contains(mousePos.x, mousePos.y))
+			{
+				std::cout << "test" << std::endl;
+				entity->Action(sceneManager);
+			}
+		}
+	}
+}
+
+void Menu::loadLeaderboard(const std::string& filename)
+{
+	leaderboard.clear(); // Vider l'ancien contenu
+
+	std::ifstream file(filename);
+	if (!file.is_open())
+	{
+		std::cerr << "Erreur : Impossible d'ouvrir le fichier " << filename << std::endl;
+		return;
+	}
+
+	std::string line;
+	while (std::getline(file, line))
+	{
+		std::istringstream iss(line);
+		std::string name;
+		int score;
+
+		if (iss >> name >> score)
+		{
+			leaderboard.emplace_back(name, score);
+		}
+		else 
+		{
+			std::cerr << "Erreur de format dans la ligne : " << line << std::endl;
+		}
+	}
+	file.close();
 }
 
 void Menu::draw()
@@ -24,12 +84,24 @@ void Menu::draw()
 	{
 		window->draw(*entity);
 	}
+
+	float yOffset = 50.0f;
+
+	for (const auto& entry : leaderboard) {
+		text.setString(entry.first + " : " + std::to_string(entry.second));
+		text.setPosition(30.0f, yOffset);
+		window->draw(text);
+		yOffset += 50.0f;
+		std::cout << "Affichage" << std::endl;
+	}
 }
 
 std::string Menu::GetType()
 {
 	return "Menu";
 }
+
+
 
 
 //else

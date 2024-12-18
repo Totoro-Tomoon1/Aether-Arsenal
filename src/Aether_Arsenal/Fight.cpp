@@ -11,9 +11,9 @@ Fight::Fight(std::vector<Entity*> entity, sf::Sprite map, std::vector<std::vecto
 
     for (int i = 0; i < posEnnemy[mCurrentWave].size(); i++)
     {
-        Sproket sproket1 = { sf::IntRect(75, 505, 75, 90),
+        Sproket* sproket1 = new Sproket{ sf::IntRect(75, 505, 75, 90),
                  sf::Vector2f(1.f, 1.f), posEnnemy[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f) };
-        mEnemy.push_back(&sproket1);
+        mEnemy.push_back(sproket1);
     }
 
     mPlayer = { sf::IntRect(230, 510, 90, 90),
@@ -54,6 +54,8 @@ Fight::Fight(std::vector<Entity*> entity, sf::Sprite map, std::vector<std::vecto
 
     /*std::vector<Bullet*> bullet;
     mBullet = bullet;*/
+
+    isWin == false;
 }
 
 std::vector<Bullet*>* Fight::GetMBullet()
@@ -105,6 +107,8 @@ void Fight::Init()
         mBullet.clear();
 
         mScore = 0;
+
+        isWin = false;
     
 }
 
@@ -357,6 +361,7 @@ void Fight::Updates(SceneManager* sceneManager)
                         if (mEnemy[j]->GetType() == "Boss")
                         {
                             //std::cout << "test" << std::endl;
+                            isWin = true;
                         }
                         mEnemy.erase(mEnemy.begin() + j);
                     }
@@ -444,6 +449,17 @@ void Fight::Updates(SceneManager* sceneManager)
         //std::cout << mCurrentWave << std::endl;
         mScoreText.setString("Score: " + std::to_string(mScore));
     
+        if (mBase.GetHP() <= 0)
+        {
+            sceneManager->ChangeScene(sceneManager->GetGameOver());
+        }
+        else if (isWin)
+        {
+            sceneManager->ChangeScene(sceneManager->GetWin());
+            Init();
+        }
+         
+        
     
 }
 
@@ -451,12 +467,14 @@ void Fight::draw()
 {
     sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
 
+    Scene::draw();
+
     for (auto& powerUp : mPowerUp)
     {
         window->draw(*powerUp);
     }
 
-    for (auto& ennemy : mEnemy)
+    for (Enemy* ennemy : mEnemy)
     {
         window->draw(*ennemy);
     }

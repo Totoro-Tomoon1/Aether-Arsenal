@@ -49,6 +49,9 @@ class Fight : public Scene
 	sf::Font mFonttest;
 	sf::Text mScoreText;
 	int mScore = 0;
+
+	bool isWin;
+
 public:
 	Fight(std::vector<Entity*> entity, sf::Sprite map, std::vector<std::vector<sf::Vector2f>> posEnnemy);
 

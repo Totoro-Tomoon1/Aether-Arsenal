@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "Fight.h"
 
 SceneManager::SceneManager(Scene* menu, std::vector<Scene*> levels, Scene* gameOver, Scene* win)
 {
@@ -12,8 +13,6 @@ SceneManager::SceneManager(Scene* menu, std::vector<Scene*> levels, Scene* gameO
 void SceneManager::ChangeScene(Scene* scene)
 {
 	mCurrentScene = scene;
-	std::cout << mMenu << std::endl;
-	std::cout << "test" << mCurrentScene << std::endl;
 }
 
 Scene* SceneManager::GetCurrentScene()
@@ -29,6 +28,11 @@ Scene* SceneManager::GetMenu()
 Scene* SceneManager::GetGameOver()
 {
 	return mGameOver;
+}
+
+Scene* SceneManager::GetWin()
+{
+	return mWin;
 }
 
 std::vector<Scene*> SceneManager::GetLevel()

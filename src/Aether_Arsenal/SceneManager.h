@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include <SFML/Graphics.hpp>
 
+class Fight;
+
 class SceneManager
 {
 	Scene* mMenu;
@@ -17,5 +19,6 @@ public:
 	Scene* GetCurrentScene();
 	Scene* GetMenu();
 	Scene* GetGameOver();
+	Scene* GetWin();
 	std::vector<Scene*> GetLevel();
 };

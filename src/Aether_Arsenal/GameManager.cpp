@@ -88,6 +88,7 @@ void GameManager::PlayGame()
     sf::Texture texture;
     if (!texture.loadFromFile("../../../res/City_WallPaper.png"))
     {
+        std::cout << "Impossible de charger le fichier" << std::endl;
     }
     sf::Sprite map(texture);
     map.setScale(sf::Vector2f(550.f / 768.f, 900.f / 1344.f));
