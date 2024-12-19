@@ -324,8 +324,13 @@ void Infinite::Updates(SceneManager* sceneManager)
             mBoolShoot = false;
         }
     }
+
     mBaseLife.setTextureRect(sf::IntRect(1503, 1057 - (mBase.GetHP() * 40), 428, 40));
-    mPlayerLife.setTextureRect(sf::IntRect(1503, 1057 - (mPlayer.GetHP() * 40), 428, 40));
+    
+    if (mPlayer.GetHP() > 0)
+        mPlayerLife.setTextureRect(sf::IntRect(1503, 1057 - (mPlayer.GetHP() * 40), 428, 40));
+    if (mPlayer.GetHP() == 0)
+        mPlayerLife.setTextureRect(sf::IntRect(1503, 1057, 428, 40));
 
     if (mEnemy.size() == 0)
     {

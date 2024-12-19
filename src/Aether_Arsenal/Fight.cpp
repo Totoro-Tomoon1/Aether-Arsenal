@@ -112,7 +112,7 @@ void Fight::Init()
             mEnemy.push_back(sproket1);
         }
 
-        mPlayer = { sf::IntRect(230, 510, 90, 90),
+        mPlayer = { sf::IntRect(291, 493, 98, 136),
                          sf::Vector2f(0.8f, 0.8f), sf::Vector2f(250.f, 670.f), 10 };
         mBase = { sf::IntRect(76, 313, 360, 76),
                      sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10 };
@@ -304,7 +304,12 @@ void Fight::Updates(SceneManager* sceneManager)
         }
 
         mBaseLife.setTextureRect(sf::IntRect(1503, 1057 - (mBase.GetHP() * 40), 428, 40));
-        mPlayerLife.setTextureRect(sf::IntRect(1503, 1057 - (mPlayer.GetHP() * 40), 428, 40));
+
+
+        if(mPlayer.GetHP() > 0)
+            mPlayerLife.setTextureRect(sf::IntRect(1503, 1057 - (mPlayer.GetHP() * 40), 428, 40));
+        if (mPlayer.GetHP() == 0)
+            mPlayerLife.setTextureRect(sf::IntRect(1503, 1057 , 428, 40));
 
         if (mEnemy.size() == 0)
         {
@@ -360,8 +365,11 @@ void Fight::Updates(SceneManager* sceneManager)
 
                     if (mEnemy[j]->GetHP() <= 0)
                     {
+                        if (mEnemy[j]->GetType() == "Sproket")
+                            mScore += 300;
+                        if (mEnemy[j]->GetType() == "Boss")
+                            mScore += 1500;
 
-                        mScore += 10;
                         int rand = GameManager::GetInstance()->GenerateRandomNumber(0, 9);
                         if (rand >= 0)
                         {
@@ -419,7 +427,7 @@ void Fight::Updates(SceneManager* sceneManager)
         else if (mPlayerIsDead && mClockDead.getElapsedTime().asSeconds() >= mPlayerDead)
         {
             mPlayerIsDead = false;
-            mPlayer = { sf::IntRect(230, 510, 90, 90),
+            mPlayer = { sf::IntRect(291, 493, 98, 136),
                          sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
         }
 
