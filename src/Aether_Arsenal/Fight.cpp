@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "SceneManager.h"
 #include "PowerUp.h"
+#include <fstream>
 
 Fight::Fight(std::vector<Entity*> entity, sf::Sprite map, std::vector<std::vector<sf::Vector2f>> posEnnemy) : Scene(map)
 {
@@ -185,6 +186,41 @@ bool Fight::Colide(Entity* nb1, Entity* nb2)
 std::string Fight::GetType()
 {
     return "Fight";
+}
+
+void Fight::UpdateLeaderBord(int mScore)
+{
+    std::vector<std::pair<std::string, int>>* leaderboard = GameManager::GetInstance()->GetLeaderBord();
+
+    std::ofstream monFlux("../../../res/leaderbord.txt");
+
+    if (monFlux)  //On teste si tout est OK
+    {
+        int i = 0;
+        bool notwrite = true;
+            for (const auto& entry : *leaderboard)
+            {
+                std::vector<int> temp = *GameManager::GetInstance()->GetScoreLeaderBord();
+                if (temp[i] < mScore && notwrite)
+                {
+                    monFlux << "Player " << mScore << std::endl;
+                    notwrite = false;
+                }
+                else
+                {
+                    monFlux << entry.first + " " + std::to_string(entry.second) << std::endl;
+                }
+                i++;
+            }
+        /*monFlux << "Bonjour, je suis une phrase écrite dans un fichier." << std::endl;
+        monFlux << 42.1337 << std::endl;
+        int age(36);
+        monFlux << "J'ai " << age << " ans." << std::endl;*/
+    }
+    else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier." << std::endl;
+    }
 }
 
 void Fight::Updates(SceneManager* sceneManager)
@@ -402,7 +438,7 @@ void Fight::Updates(SceneManager* sceneManager)
                 //mBaseLife.setTextureRect(sf::IntRect(1503, mBaseLife.getTextureRect().top + 40, 428, 40));
             }
 
-            if (mEnemy.size() != 0 && Colide(mEnemy[j], &mPlayer))
+            if (mEnemy.size() != 0 && j < mEnemy.size() && Colide(mEnemy[j], &mPlayer))
             {
                 if (mPlayerIsImmune)
                 {
@@ -451,10 +487,13 @@ void Fight::Updates(SceneManager* sceneManager)
     
         if (mBase.GetHP() <= 0)
         {
+            UpdateLeaderBord(mScore);
             sceneManager->ChangeScene(sceneManager->GetGameOver());
+            Init();
         }
         else if (isWin)
         {
+            UpdateLeaderBord(mScore);
             sceneManager->ChangeScene(sceneManager->GetWin());
             Init();
         }

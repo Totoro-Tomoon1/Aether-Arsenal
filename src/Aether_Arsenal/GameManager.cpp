@@ -40,6 +40,14 @@ int GameManager::GenerateRandomNumber(int min, int max)
 
     return value;
 }
+std::vector<std::pair<std::string, int>>* GameManager::GetLeaderBord()
+{
+    return &mLeaderboard;
+}
+std::vector<int>* GameManager::GetScoreLeaderBord()
+{
+    return &mscoreLeaderboard;
+}
 void GameManager::PlayGame()
 {
     //std::ifstream monFlux1("../../../res/leaderbord.txt");  //Ouverture d'un fichier en lecture
@@ -189,10 +197,10 @@ void GameManager::PlayGame()
 
     int wave = 1;
 
-    Menu menus = {entityMenu ,ecran};
+    Menu menus = {entityMenu ,ecran, true};
     Fight* niveau1 = new Fight(entityLevel, map, EnemiesPos);
-    Menu* gameOver = new Menu(entityGameOver, map);
-    Menu* win = new Menu(entityWin, map);
+    Menu* gameOver = new Menu(entityGameOver, map, false);
+    Menu* win = new Menu(entityWin, map, false);
 
     std::vector<Scene*> levels;
     levels.push_back(niveau1);

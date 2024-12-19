@@ -66,5 +66,6 @@ public:
 	void GenerateBullet(int nb);
 	bool Colide(Entity* nb1, Entity* nb2);
 	std::string GetType() override;
+	void UpdateLeaderBord(int mScore);
 };
 

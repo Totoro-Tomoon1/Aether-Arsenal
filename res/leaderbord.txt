@@ -1,5 +1,5 @@
-Player 1200
-Player 950
-Player 870
-Player 640
-Player 520
+Player 500
+Player 310
+Player 50
+Player 30
+Player 20

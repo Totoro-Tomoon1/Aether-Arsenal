@@ -2,7 +2,7 @@
 #include  "fstream"
 #include "sstream"
 
-Menu::Menu(std::vector<Entity*> entity, sf::Sprite map) : Scene(map)
+Menu::Menu(std::vector<Entity*> entity, sf::Sprite map, bool show) : Scene(map)
 {
 	mEntity = entity;
 
@@ -15,6 +15,10 @@ Menu::Menu(std::vector<Entity*> entity, sf::Sprite map) : Scene(map)
 	text.setFillColor(sf::Color::White);
 
 	loadLeaderboard("../../../res/leaderbord.txt");
+
+	mShowLeaderBoard = show;
+
+	//mLeaderboard = GameManager::GetInstance()->GetLeaderBord();  marche pas??
 }
 
 void Menu::Updates(SceneManager* sceneManager)
@@ -44,7 +48,8 @@ void Menu::Updates(SceneManager* sceneManager)
 
 void Menu::loadLeaderboard(const std::string& filename)
 {
-	leaderboard.clear(); // Vider l'ancien contenu
+	mLeaderboard = GameManager::GetInstance()->GetLeaderBord();
+	mLeaderboard->clear();
 
 	std::ifstream file(filename);
 	if (!file.is_open())
@@ -62,7 +67,8 @@ void Menu::loadLeaderboard(const std::string& filename)
 
 		if (iss >> name >> score)
 		{
-			leaderboard.emplace_back(name, score);
+			mLeaderboard->emplace_back(name, score);
+			GameManager::GetInstance()->GetScoreLeaderBord()->push_back(score);
 		}
 		else 
 		{
@@ -87,12 +93,17 @@ void Menu::draw()
 
 	float yOffset = 50.0f;
 
-	for (const auto& entry : leaderboard) {
-		text.setString(entry.first + " : " + std::to_string(entry.second));
-		text.setPosition(30.0f, yOffset);
-		window->draw(text);
-		yOffset += 50.0f;
-		std::cout << "Affichage" << std::endl;
+	if (mShowLeaderBoard)
+	{
+		loadLeaderboard("../../../res/leaderbord.txt");
+		for (const auto& entry : *mLeaderboard)
+		{
+			text.setString(entry.first + " : " + std::to_string(entry.second));
+			text.setPosition(30.0f, yOffset);
+			window->draw(text);
+			yOffset += 50.0f;
+			//std::cout << "Affichage" << std::endl;
+		}
 	}
 }
 
