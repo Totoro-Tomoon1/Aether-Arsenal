@@ -11,14 +11,23 @@ void Button::Action(SceneManager* scenemanager) const
 	switch (mType)
 	{
 	case 1:
+	{
 		std::cout << "return menu" << std::endl;
 		scenemanager->ChangeScene(scenemanager->GetMenu());
-		break;
+	}
+	break;
 
 	case 2:
+	{
 		std::cout << "return level" << std::endl;
 		scenemanager->ChangeScene(scenemanager->GetLevel()[0]);
-		break;
+	}
+	break;
+	case 3:
+	{
+		std::cout << "return infinite" << std::endl;
+		scenemanager->ChangeScene(scenemanager->GetInfinite());
+	}
 	}
 }
 

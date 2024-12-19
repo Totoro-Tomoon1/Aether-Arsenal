@@ -11,7 +11,7 @@ Menu::Menu(std::vector<Entity*> entity, sf::Sprite map, bool show) : Scene(map)
 	}
 
 	text.setFont(font);
-	text.setCharacterSize(24);
+	text.setCharacterSize(20);
 	text.setFillColor(sf::Color::White);
 
 	loadLeaderboard("../../../res/leaderbord.txt");
@@ -91,7 +91,7 @@ void Menu::draw()
 		window->draw(*entity);
 	}
 
-	float yOffset = 50.0f;
+	float yOffset = 650.0f;
 
 	if (mShowLeaderBoard)
 	{
@@ -99,9 +99,9 @@ void Menu::draw()
 		for (const auto& entry : *mLeaderboard)
 		{
 			text.setString(entry.first + " : " + std::to_string(entry.second));
-			text.setPosition(30.0f, yOffset);
+			text.setPosition(380.0f, yOffset);
 			window->draw(text);
-			yOffset += 50.0f;
+			yOffset += 40.0f;
 			//std::cout << "Affichage" << std::endl;
 		}
 	}

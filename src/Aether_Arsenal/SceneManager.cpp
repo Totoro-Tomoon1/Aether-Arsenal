@@ -1,10 +1,11 @@
 #include "SceneManager.h"
 #include "Fight.h"
 
-SceneManager::SceneManager(Scene* menu, std::vector<Scene*> levels, Scene* gameOver, Scene* win)
+SceneManager::SceneManager(Scene* menu, std::vector<Scene*> levels, Scene* infinite, Scene* gameOver, Scene* win)
 {
 	mMenu = menu;
 	mLevels = levels;
+	mInfinite = infinite;
 	mGameOver = gameOver;
 	mWin = win;
 	mCurrentScene = menu;
@@ -23,6 +24,11 @@ Scene* SceneManager::GetCurrentScene()
 Scene* SceneManager::GetMenu()
 {
 	return mMenu;
+}
+
+Scene* SceneManager::GetInfinite()
+{
+	return mInfinite;
 }
 
 Scene* SceneManager::GetGameOver()

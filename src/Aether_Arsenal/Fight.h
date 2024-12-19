@@ -25,6 +25,7 @@ class Fight : public Scene
 	int mCurrentWave;
 
 	sf::Sprite mBaseLife;
+	sf::Sprite mPlayerLife;
 
 	sf::Clock mClockImmune;
 	float mPlayerImmune;
@@ -50,7 +51,13 @@ class Fight : public Scene
 	sf::Text mScoreText;
 	int mScore = 0;
 
+	sf::Clock mCLockComp;
+	sf::Text mCooldown;
+	float mFloatComp = 4.f;
+	bool mBoolComp;
+
 	bool isWin;
+	sf::Text mWave;
 
 public:
 	Fight(std::vector<Entity*> entity, sf::Sprite map, std::vector<std::vector<sf::Vector2f>> posEnnemy);

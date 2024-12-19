@@ -12,6 +12,7 @@
 #include <SFML/Graphics.hpp>
 #include "Menu.h"
 #include "Fight.h"
+#include "Infinite.h"
 
 GameManager* GameManager::mInstance = nullptr;
 
@@ -113,29 +114,40 @@ void GameManager::PlayGame()
     std::vector<Entity*> entityGameOver;
     std::vector<Entity*> entityWin;
 
-    Button button = {2, sf::IntRect(781, 470, 354, 150),
-                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 525.f) };
+    Button button = { 2, sf::IntRect(1971, 422, 358, 244),
+            sf::Vector2f(0.5f, 0.4f), sf::Vector2f(180.f, 420.f) };
 
-    Button buttonRetry = { 2, sf::IntRect(508, 205, 414, 116),
-                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 525.f) };
+    Button buttonInfinite = { 3, sf::IntRect(2672, 45, 372, 584),
+                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(35.f, 530.f) };
 
-    Button buttonMenu = { 1, sf::IntRect(515, 40, 416, 120),
-                sf::Vector2f(0.6f, 0.6f), sf::Vector2f(175.f, 725.f) };
+    Button buttonRetryN = { 2, sf::IntRect(1666, 1215, 237, 110),
+            sf::Vector2f(0.7f, 0.7f), sf::Vector2f(187.f, 550.f) };
+
+    Button buttonRetryI = { 3, sf::IntRect(1666, 1215, 237, 110),
+            sf::Vector2f(0.7f, 0.7f), sf::Vector2f(187.f, 550.f) };
+
+    Button buttonMenu = { 1, sf::IntRect(1495, 1404, 459, 102),
+            sf::Vector2f(0.7f, 0.7f), sf::Vector2f(110.f, 725.f) };
+
+    Entity logo = { sf::IntRect(1985, 686, 1075, 1024),
+                sf::Vector2f(0.35f, 0.35f), sf::Vector2f(80.f, 50.f) };
 
     entityMenu.push_back(&button);
+    entityMenu.push_back(&buttonInfinite);
+    entityMenu.push_back(&logo);
 
     Entity textOver = { sf::IntRect(1162, 17, 773, 617),
                 sf::Vector2f(0.6f, 0.6f), sf::Vector2f(43.f, 86.f) };
 
     entityGameOver.push_back(&textOver);
-    entityGameOver.push_back(&buttonRetry);
+    entityGameOver.push_back(&buttonRetryN);
     entityGameOver.push_back(&buttonMenu);
 
     Entity textWin = { sf::IntRect(495, 1117, 497, 507),
                 sf::Vector2f(0.8f, 0.6f), sf::Vector2f(80.f, 100.f) };
 
     entityWin.push_back(&textWin);
-    entityWin.push_back(&buttonRetry);
+    entityWin.push_back(&buttonRetryI);
     entityWin.push_back(&buttonMenu);
 
     //wave1
@@ -199,12 +211,13 @@ void GameManager::PlayGame()
 
     Menu menus = {entityMenu ,ecran, true};
     Fight* niveau1 = new Fight(entityLevel, map, EnemiesPos);
+    Infinite* infiniteLevel = new Infinite(entityLevel, map);
     Menu* gameOver = new Menu(entityGameOver, map, false);
     Menu* win = new Menu(entityWin, map, false);
 
     std::vector<Scene*> levels;
     levels.push_back(niveau1);
-    SceneManager sceneManager = {&menus, levels, gameOver, win};
+    SceneManager sceneManager = {&menus, levels, infiniteLevel, gameOver, win};
 
     sf::Clock clock;
     bool isPaused = false;

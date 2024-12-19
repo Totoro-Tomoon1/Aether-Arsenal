@@ -12,13 +12,13 @@ Fight::Fight(std::vector<Entity*> entity, sf::Sprite map, std::vector<std::vecto
 
     for (int i = 0; i < posEnnemy[mCurrentWave].size(); i++)
     {
-        Sproket* sproket1 = new Sproket{ sf::IntRect(75, 505, 75, 90),
-                 sf::Vector2f(1.f, 1.f), posEnnemy[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f) };
+        Sproket* sproket1 = new Sproket{ sf::IntRect(186, 487, 76, 133),
+         sf::Vector2f(0.9f, 1.f), posEnnemy[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f) };
         mEnemy.push_back(sproket1);
     }
 
-    mPlayer = { sf::IntRect(230, 510, 90, 90),
-                     sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
+    mPlayer = { sf::IntRect(291, 493, 98, 136),
+                  sf::Vector2f(0.8f, 0.8f), sf::Vector2f(250.f, 670.f), 10 };
 
     mBase = { sf::IntRect(76, 313, 360, 76),
                  sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10 };
@@ -46,12 +46,27 @@ Fight::Fight(std::vector<Entity*> entity, sf::Sprite map, std::vector<std::vecto
     }
     mScoreText.setFont(mFonttest);
     mScoreText.setCharacterSize(30);
-    mScoreText.setFillColor(sf::Color::Magenta);
+    mScoreText.setFillColor(sf::Color::White);
     mScoreText.setPosition(10, 10);
+
+    mCooldown.setFont(mFonttest);
+    mCooldown.setCharacterSize(15);
+    mCooldown.setFillColor(sf::Color::White);
+    mCooldown.setPosition(450, 750);
+
+    mWave.setFont(mFonttest);
+    mWave.setCharacterSize(15);
+    mWave.setFillColor(sf::Color::White);
+    mWave.setPosition(450, 20);
 
     mBaseLife.setTexture(*GameManager::GetInstance()->GetTexture());
     mBaseLife.setTextureRect(sf::IntRect(1503, 657, 428, 40));
     mBaseLife.setPosition(sf::Vector2f(0.f, 860.f));
+
+    mPlayerLife.setTexture(*GameManager::GetInstance()->GetTexture());
+    mPlayerLife.setTextureRect(sf::IntRect(1503, 657, 428, 40));
+    mPlayerLife.setPosition(sf::Vector2f(320.f, 780.f));
+    mPlayerLife.setScale(sf::Vector2f(0.5f, 0.5f));
 
     /*std::vector<Bullet*> bullet;
     mBullet = bullet;*/
@@ -72,15 +87,16 @@ void Fight::GenerateNextWave()
     {
         for (int i = 0; i < mAllPos[mCurrentWave].size(); i++)
         {
-            Sproket* sproket1 = new Sproket{ sf::IntRect(75, 505, 75, 90),
-                     sf::Vector2f(1.f, 1.f), mAllPos[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f) };
+            Sproket* sproket1 = new Sproket{ sf::IntRect(186, 487, 76, 133),
+                     sf::Vector2f(0.9f, 1.f), mAllPos[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f) };
             mEnemy.push_back(sproket1);
         }
     }
     else if (mCurrentWave == 4)
     {
-        Boss* boss = new Boss{ sf::IntRect(39, 30, 430, 250),
-             sf::Vector2f(1.05f, 1.05f), sf::Vector2f(20.f, 22.f), 1000, sf::Vector2f(0.25f, 0.4f) };
+        Boss* boss = new Boss{ sf::IntRect(19, 9, 469, 289),
+     sf::Vector2f(1.f, 1.f), sf::Vector2f(20.f, 22.f), 1000, sf::Vector2f(0.25f, 0.4f) };
+
         mEnemy.push_back(boss);
     }
 
@@ -95,12 +111,12 @@ void Fight::Init()
         for (int i = 0; i < mAllPos[mCurrentWave].size(); i++)
         {
             Sproket* sproket1 = new Sproket{ sf::IntRect(75, 505, 75, 90),
-                     sf::Vector2f(1.f, 1.f), mAllPos[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f) };
+                     sf::Vector2f(0.9f, 1.f), mAllPos[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f) };
             mEnemy.push_back(sproket1);
         }
 
         mPlayer = { sf::IntRect(230, 510, 90, 90),
-                         sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
+                         sf::Vector2f(0.8f, 0.8f), sf::Vector2f(250.f, 670.f), 10 };
         mBase = { sf::IntRect(76, 313, 360, 76),
                      sf::Vector2f(1.52f, 1.4f), sf::Vector2f(0.f, 900.f - (76.f * 1.4f)), 10 };
         mEntity.push_back(&mBase);
@@ -115,14 +131,14 @@ void Fight::Init()
 
 void Fight::GenerateBullet(int nb)
 {
-    int twoBullet[2][2] = { {20, 0}, {50, 0} };
-    int threeBullet[3][2] = { {0, 0}, {35, 0}, {70, 0} };
+    int twoBullet[2][2] = { {10, 0}, {50, 0} };
+    int threeBullet[3][2] = { {0, 0}, {32, 0}, {63, 0} };
 
     if (nb == 1)
     {
         Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
                         sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 35, mPlayer.getPosition().y - 32.5), 10, true , sf::Vector2f(0.f, -5.f) };
+                        sf::Vector2f(mPlayer.getPosition().x + 32, mPlayer.getPosition().y - 30), 10, true , sf::Vector2f(0.f, -5.f) };
         mBullet.push_back((newBullet));
     }
     else
@@ -135,7 +151,7 @@ void Fight::GenerateBullet(int nb)
             {
                 Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
                         sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + twoBullet[i][0], mPlayer.getPosition().y - 32.5), damage, true , sf::Vector2f(0.f, -5.f) };
+                        sf::Vector2f(mPlayer.getPosition().x + twoBullet[i][0], mPlayer.getPosition().y - 30), damage, true , sf::Vector2f(0.f, -5.f) };
                 mBullet.push_back((newBullet));
             }
         }
@@ -145,7 +161,7 @@ void Fight::GenerateBullet(int nb)
             {
                 Bullet* newBullet = new Bullet{ sf::IntRect(410, 525, 30, 65),
                         sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + threeBullet[i][0], mPlayer.getPosition().y - 32.5), damage, true , sf::Vector2f(0.f, -5.f) };
+                        sf::Vector2f(mPlayer.getPosition().x + threeBullet[i][0], mPlayer.getPosition().y - 30), damage, true , sf::Vector2f(0.f, -5.f) };
                 mBullet.push_back((newBullet));
             }
         }
@@ -156,13 +172,13 @@ void Fight::GenerateBullet(int nb)
             {
                 Bullet* newBulletl = new Bullet{ sf::IntRect(410, 525, 30, 65),
                         sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 0, mPlayer.getPosition().y - 32.5), damage, true , sf::Vector2f(-0.4 * (1 + i / 2), -5.f) };
+                        sf::Vector2f(mPlayer.getPosition().x -15 - i, mPlayer.getPosition().y - 30), damage, true , sf::Vector2f(-0.4 * (1 + i / 2), -5.f) };
 
                 newBulletl->rotate(-20 * (1 + i * 0.1));
 
                 Bullet* newBulletr = new Bullet{ sf::IntRect(410, 525, 30, 65),
                         sf::Vector2f(0.5f, 0.5f),
-                        sf::Vector2f(mPlayer.getPosition().x + 70, mPlayer.getPosition().y - 32.5), damage, true , sf::Vector2f(0.4 * (1 + i / 2), -5.f) };
+                        sf::Vector2f(mPlayer.getPosition().x + 78 + i, mPlayer.getPosition().y - 30), damage, true , sf::Vector2f(0.4 * (1 + i / 2), -5.f) };
 
                 newBulletr->rotate(20 * (1 + i * 0.1));
 
@@ -303,9 +319,28 @@ void Fight::Updates(SceneManager* sceneManager)
         //        std::cout << "detecte" << std::endl;
         //    }
         //}
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && mPlayer.GetHP() > 0)
+        {
+            if (mBoolComp)
+            {
+                mBoolComp = false;
+                mCLockComp.restart();
+            }
+            else if (mBoolComp == false && mCLockComp.getElapsedTime().asSeconds() >= mFloatComp)
+            {
+                Bullet* comp = new Bullet{ sf::IntRect(1502, 1122, 111, 250),
+                            sf::Vector2f(0.7f, 0.7f),
+                            sf::Vector2f(mPlayer.getPosition().x, mPlayer.getPosition().y), 200, true , sf::Vector2f(0.f, -6.f) };
+
+                mBullet.push_back(comp);
+                mBoolComp = true;
+            }
+
+        }
     }
 
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && mPlayer.GetHP() > 0)
+        if (mPlayer.GetHP() > 0)
         {
             if (!mBoolShoot)
             {
@@ -324,6 +359,7 @@ void Fight::Updates(SceneManager* sceneManager)
 
         //std::cout << mEnemy.size() << std::endl;
         mBaseLife.setTextureRect(sf::IntRect(1503, 1057 - (mBase.GetHP() * 40), 428, 40));
+        mPlayerLife.setTextureRect(sf::IntRect(1503, 1057 - (mPlayer.GetHP() * 40), 428, 40));
 
         if (mEnemy.size() == 0)
         {
@@ -345,7 +381,7 @@ void Fight::Updates(SceneManager* sceneManager)
             enemy->move(enemy->GetMove());
 
             int rand = GameManager::GetInstance()->GenerateRandomNumber(0, 199);
-            if (rand == 0)
+            if (rand == 0 && enemy->GetType() != "Boss")
             {
                 Bullet* newBullet = new Bullet{ sf::IntRect(446, 525, 30, 65),
                              sf::Vector2f(0.5f, 0.5f),
@@ -484,6 +520,20 @@ void Fight::Updates(SceneManager* sceneManager)
         }
         //std::cout << mCurrentWave << std::endl;
         mScoreText.setString("Score: " + std::to_string(mScore));
+
+        mWave.setString("Wave: " + std::to_string(mCurrentWave + 1));
+
+        float cooldown = 4 - mCLockComp.getElapsedTime().asSeconds();
+        if (cooldown <= 0)
+        {
+            mCooldown.setFillColor(sf::Color::Green);
+            cooldown = 0;
+        }
+        else
+            mCooldown.setFillColor(sf::Color::Red);
+
+        std::cout << cooldown << std::endl;
+        mCooldown.setString(std::to_string(cooldown));
     
         if (mBase.GetHP() <= 0)
         {
@@ -533,7 +583,10 @@ void Fight::draw()
     }
 
     window->draw(mScoreText);
+    window->draw(mCooldown);
+    window->draw(mWave);
     window->draw(mBaseLife);
+    window->draw(mPlayerLife);
 
     std::cout << "test" << std::endl;
     window->draw(mScoreText);
