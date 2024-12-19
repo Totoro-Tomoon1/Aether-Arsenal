@@ -68,9 +68,6 @@ Fight::Fight(std::vector<Entity*> entity, sf::Sprite map, std::vector<std::vecto
     mPlayerLife.setPosition(sf::Vector2f(320.f, 780.f));
     mPlayerLife.setScale(sf::Vector2f(0.5f, 0.5f));
 
-    /*std::vector<Bullet*> bullet;
-    mBullet = bullet;*/
-
     isWin == false;
 }
 
@@ -110,7 +107,7 @@ void Fight::Init()
         mPowerUp.clear();
         for (int i = 0; i < mAllPos[mCurrentWave].size(); i++)
         {
-            Sproket* sproket1 = new Sproket{ sf::IntRect(75, 505, 75, 90),
+            Sproket* sproket1 = new Sproket{ sf::IntRect(186, 487, 76, 133),
                      sf::Vector2f(0.9f, 1.f), mAllPos[mCurrentWave][i], 200, sf::Vector2f(0.f, 0.8f) };
             mEnemy.push_back(sproket1);
         }
@@ -144,7 +141,6 @@ void Fight::GenerateBullet(int nb)
     else
     {
         float damage = 2 + ((10 - 2) / nb);
-        //std::cout << damage << std::endl;
         if (nb % 2 == 0)
         {
             for (int i = 0; i < 2; i++)
@@ -228,10 +224,6 @@ void Fight::UpdateLeaderBord(int mScore)
                 }
                 i++;
             }
-        /*monFlux << "Bonjour, je suis une phrase écrite dans un fichier." << std::endl;
-        monFlux << 42.1337 << std::endl;
-        int age(36);
-        monFlux << "J'ai " << age << " ans." << std::endl;*/
     }
     else
     {
@@ -246,8 +238,6 @@ void Fight::Updates(SceneManager* sceneManager)
         mPlayer.MovePlayer();
 
     mPlayer.move(mPlayer.GetMove());
-
-    //std::cout << mPlayer.getPosition().x << "      " << mPlayer.getPosition().y << std::endl;
 
     if (mPlayer.getPosition().x < 0)
         mPlayer.setPosition(0, mPlayer.getPosition().y);
@@ -264,16 +254,8 @@ void Fight::Updates(SceneManager* sceneManager)
 
     for (Entity* entity : mEntity)
     {
-        //std::cout << entity->GetType() << std::endl;
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && entity->GetType() == "Button")
         {
-            //if (mBoolButton)
-            //{
-            //    mBoolButton = false;
-            //    mCLockButton.restart();
-            //}
-            //else if (mBoolButton == false && mCLockButton.getElapsedTime().asSeconds() >= mFloatButton)
-            //{
             mBoolButton = true;
             sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
 
@@ -281,45 +263,12 @@ void Fight::Updates(SceneManager* sceneManager)
             sf::FloatRect globalButtonBounds = entity->getTransform().transformRect(buttonBounds);
 
             sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
-            /*std::cout << "mousx= " << mousePos.x << " mousy= " << mousePos.y << std::endl;
-            std::cout << "rect: left= " << globalButtonBounds.left << " top= " << globalButtonBounds.top << " w= " << globalButtonBounds.width << " h= " << globalButtonBounds.height << std::endl;
-            std::cout << globalButtonBounds.contains(mousePos.x, mousePos.y) << std::endl;*/
 
             if (globalButtonBounds.contains(mousePos.x, mousePos.y))
             {
-                std::cout << "test" << std::endl;
                 entity->Action(sceneManager);
             }
-            //}
-            //else if (mBoolButton == false && mCLockButton.getElapsedTime().asSeconds() >= mFloatButton)
-            //{
-            //    mBoolButton = true;
-            //    int topx = entity->getPosition().x;
-            //    int topy = entity->getPosition().y;
-            //}
         }
-
-        //if (entity->GetType() == "Button")
-        //{
-        //    sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
-        //    sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
-
-        //    sf::FloatRect buttonBounds = entity->GetSprite()->getGlobalBounds();
-        //    sf::FloatRect globalButtonBounds = entity->getTransform().transformRect(buttonBounds);
-
-        //    //sf::Vector2f mousePos = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
-        //    std::cout << "mousx= " << mousePos.x << " mousy= " << mousePos.y << std::endl;
-        //    std::cout << "rect: left= " << globalButtonBounds.left << " top= " << globalButtonBounds.top << " w= " << globalButtonBounds.width << " h= " << globalButtonBounds.height << std::endl;
-
-
-
-
-        //    if (globalButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
-        //    {
-        //        std::cout << "detecte" << std::endl;
-        //    }
-        //}
-
         if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && mPlayer.GetHP() > 0)
         {
             if (mBoolComp)
@@ -354,10 +303,6 @@ void Fight::Updates(SceneManager* sceneManager)
             }
         }
 
-        //if (mEnemy.size() != 0)
-            //std::cout << mEnemy[0]->GetHP() << "          " << mBullet.size() << std::endl;
-
-        //std::cout << mEnemy.size() << std::endl;
         mBaseLife.setTextureRect(sf::IntRect(1503, 1057 - (mBase.GetHP() * 40), 428, 40));
         mPlayerLife.setTextureRect(sf::IntRect(1503, 1057 - (mPlayer.GetHP() * 40), 428, 40));
 
@@ -405,11 +350,6 @@ void Fight::Updates(SceneManager* sceneManager)
             {
                 for (int j = mEnemy.size() - 1; j >= 0 && i >= 0; j--)
                 {
-                    /*sf::FloatRect bulletBounds = mBullet[i]->GetSprite()->getGlobalBounds();
-                    sf::FloatRect globalBulletBounds = mBullet[i]->getTransform().transformRect(bulletBounds);
-                    sf::FloatRect enemyBounds = mEnemy[j]->GetSprite()->getGlobalBounds();
-                    sf::FloatRect globalEnemyBounds = mEnemy[j]->getTransform().transformRect(enemyBounds);*/
-
                     if (Colide(mBullet[i], mEnemy[j]))
                     {
                         mEnemy[j]->TakeDamage(mBullet[i]->GetDamage());
@@ -432,7 +372,6 @@ void Fight::Updates(SceneManager* sceneManager)
                         }
                         if (mEnemy[j]->GetType() == "Boss")
                         {
-                            //std::cout << "test" << std::endl;
                             isWin = true;
                         }
                         mEnemy.erase(mEnemy.begin() + j);
@@ -441,12 +380,6 @@ void Fight::Updates(SceneManager* sceneManager)
             }
             else
             {
-                /*sf::FloatRect bulletBounds = mBullet[i]->GetSprite()->getGlobalBounds();
-                sf::FloatRect globalBulletBounds = mBullet[i]->getTransform().transformRect(bulletBounds);
-
-                sf::FloatRect playerBounds = mPlayer.GetSprite()->getGlobalBounds();
-                sf::FloatRect globalPlayerBounds = mPlayer.getTransform().transformRect(playerBounds);*/
-
                 if (Colide(mBullet[i], &mPlayer))
                 {
                     mPlayer.TakeDamage(mBullet[i]->GetDamage());
@@ -458,20 +391,10 @@ void Fight::Updates(SceneManager* sceneManager)
         }
         for (int j = mEnemy.size() - 1; j >= 0; j--)
         {
-            /*sf::FloatRect enemyBounds = mEnemy[j]->GetSprite()->getGlobalBounds();
-            sf::FloatRect globalEnemyBounds = mEnemy[j]->getTransform().transformRect(enemyBounds);
-
-            sf::FloatRect baseBounds = mEntity[0]->GetSprite()->getGlobalBounds();
-            sf::FloatRect globalBaseBounds = mEntity[0]->getTransform().transformRect(baseBounds);
-
-            sf::FloatRect playerBounds = mPlayer.GetSprite()->getGlobalBounds();
-            sf::FloatRect globalPlayerBounds = mPlayer.getTransform().transformRect(playerBounds);*/
-
             if (Colide(mEnemy[j], mEntity[0]))
             {
                 mEntity[0]->TakeDamage(10);//damage base
                 mEnemy.erase(mEnemy.begin() + j);
-                //mBaseLife.setTextureRect(sf::IntRect(1503, mBaseLife.getTextureRect().top + 40, 428, 40));
             }
 
             if (mEnemy.size() != 0 && j < mEnemy.size() && Colide(mEnemy[j], &mPlayer))
@@ -500,13 +423,8 @@ void Fight::Updates(SceneManager* sceneManager)
                          sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
         }
 
-        /*sf::FloatRect playerBounds = mPlayer.GetSprite()->getGlobalBounds();
-        sf::FloatRect globalPlayerBounds = mPlayer.getTransform().transformRect(playerBounds);*/
-
         for (int i = mPowerUp.size() - 1; i >= 0; i--)
         {
-            /*sf::FloatRect powerUpBounds = mPowerUp[i]->GetSprite()->getGlobalBounds();
-            sf::FloatRect globalPowerUpBounds = mPowerUp[i]->getTransform().transformRect(powerUpBounds);*/
 
             if (Colide(&mPlayer, mPowerUp[i]))
             {
@@ -518,7 +436,6 @@ void Fight::Updates(SceneManager* sceneManager)
         {
             mEnemy[0]->SpawnSproket(&mEnemy);
         }
-        //std::cout << mCurrentWave << std::endl;
         mScoreText.setString("Score: " + std::to_string(mScore));
 
         mWave.setString("Wave: " + std::to_string(mCurrentWave + 1));
@@ -532,7 +449,6 @@ void Fight::Updates(SceneManager* sceneManager)
         else
             mCooldown.setFillColor(sf::Color::Red);
 
-        std::cout << cooldown << std::endl;
         mCooldown.setString(std::to_string(cooldown));
     
         if (mBase.GetHP() <= 0)
@@ -547,9 +463,6 @@ void Fight::Updates(SceneManager* sceneManager)
             sceneManager->ChangeScene(sceneManager->GetWin());
             Init();
         }
-         
-        
-    
 }
 
 void Fight::draw()
@@ -588,7 +501,6 @@ void Fight::draw()
     window->draw(mBaseLife);
     window->draw(mPlayerLife);
 
-    std::cout << "test" << std::endl;
     window->draw(mScoreText);
     
 

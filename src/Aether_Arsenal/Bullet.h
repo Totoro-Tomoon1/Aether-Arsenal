@@ -4,7 +4,7 @@
 class Bullet : public Entity
 {
 	float mDamage;
-	bool mTeam;
+	bool mTeam; //indique si c'est le joueur ou les ennemies qui prennet les degats
 	sf::Vector2f mSpeed;
 
 public:

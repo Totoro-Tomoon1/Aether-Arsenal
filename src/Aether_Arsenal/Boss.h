@@ -4,7 +4,7 @@
 class Boss : public Enemy
 {
 
-	//1 sproket toues les 3s
+	//Cooldown pour le spawn du sproket
 	sf::Clock mSpawnCooldown;
 	float mDeltaTime;
 	bool mCanSpawn;
@@ -16,5 +16,4 @@ public:
 	sf::Vector2f GetMove() override;
     void SpawnSproket(std::vector<Enemy*>* mEnemy) override;
     std::string GetType() const override;
-    void Move();
 };

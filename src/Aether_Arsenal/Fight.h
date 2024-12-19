@@ -69,7 +69,6 @@ public:
 	Player* GetPlayer();
 	void GenerateNextWave();
 	void Init();
-	bool Iswin();
 	void GenerateBullet(int nb);
 	bool Colide(Entity* nb1, Entity* nb2);
 	std::string GetType() override;

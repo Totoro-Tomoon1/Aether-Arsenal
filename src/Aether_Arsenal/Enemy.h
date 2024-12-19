@@ -5,7 +5,6 @@
 class Enemy : public Entity
 {
 protected:
-	sf::Vector2f mVector;	//il sert a quoi?
 	sf::Vector2f mMove;
 
 public:
