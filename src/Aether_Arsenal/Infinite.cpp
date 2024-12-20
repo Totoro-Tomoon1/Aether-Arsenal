@@ -446,7 +446,7 @@ void Infinite::Updates(SceneManager* sceneManager)
     {
         mPlayerIsDead = false;
         mPlayer = { sf::IntRect(291, 493, 98, 136),
-                     sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
+                     sf::Vector2f(0.8f, 0.8f), sf::Vector2f(250.f, 670.f), 10 };
     }
 
     for (int i = mPowerUp.size() - 1; i >= 0; i--)
@@ -474,7 +474,6 @@ void Infinite::Updates(SceneManager* sceneManager)
     else
         mCooldown.setFillColor(sf::Color::Red);
 
-    std::cout << cooldown << std::endl;
     mCooldown.setString(std::to_string(cooldown));
 
     if (mBase.GetHP() <= 0)
@@ -483,7 +482,6 @@ void Infinite::Updates(SceneManager* sceneManager)
         sceneManager->ChangeScene(sceneManager->GetGameOver());
         Init();
     }
-    std::cout << mCurrentWave << std::endl;
 
     if (mCurrentWave % 5 == 0 && mEnemy.size() > 0)
     {

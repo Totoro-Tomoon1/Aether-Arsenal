@@ -1,5 +1,5 @@
 Player 62700
-Player 3900
-Player 310
+Player 10500
+Player 8700
 Player 310
 Player 310

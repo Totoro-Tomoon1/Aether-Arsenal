@@ -34,7 +34,6 @@ void Menu::Updates(SceneManager* sceneManager)
 
 			if (globalButtonBounds.contains(mousePos.x, mousePos.y))
 			{
-				std::cout << "test" << std::endl;
 				entity->Action(sceneManager);
 			}
 		}
@@ -78,8 +77,6 @@ void Menu::draw()
 	Scene::draw();
 
 	sf::RenderWindow* window = GameManager::GetInstance()->GetWindow();
-
-	std::cout << mEntity.size() << std::endl;
 
 	for (Entity* entity : mEntity)
 	{

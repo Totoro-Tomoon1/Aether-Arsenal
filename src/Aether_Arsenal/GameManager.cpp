@@ -114,7 +114,7 @@ void GameManager::PlayGame()
                 sf::Vector2f(0.8f, 0.6f), sf::Vector2f(80.f, 100.f) };
 
     entityWin.push_back(&textWin);
-    entityWin.push_back(&buttonRetryI);
+    entityWin.push_back(&buttonRetryN);
     entityWin.push_back(&buttonMenu);
 
     //wave1

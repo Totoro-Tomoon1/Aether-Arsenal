@@ -12,25 +12,21 @@ sf::Vector2f Boss::GetMove()
 {
 	if (getPosition().x >= 80 && getPosition().y >= 55)
 	{
-		std::cout << "x : " << getPosition().x << "\ty : " << getPosition().y << "\t1" << std::endl;
 		mMove = sf::Vector2f(0.f, -0.4f);
 	}
 
 	if (getPosition().x >= 80 && getPosition().y <= 14)
 	{
-		std::cout << "x : " << getPosition().x << "\ty : " << getPosition().y << "\t2" << std::endl;
 		mMove = sf::Vector2f(-0.25f, 0.4f);
 	}
 
 	if (getPosition().x <= 20 && getPosition().y >= 55)
 	{
-		std::cout << "x : " << getPosition().x << "\ty : " << getPosition().y << "\t3" << std::endl;
 		mMove = sf::Vector2f(0.f, -0.4f);
 	}
 
 	if (getPosition().x <= 20 && getPosition().y <= 14)
 	{
-		std::cout << "x : " << getPosition().x << "\ty : " << getPosition().y << "\t4" << std::endl;
 		mMove = sf::Vector2f(0.25f, 0.4f);
 	}
 

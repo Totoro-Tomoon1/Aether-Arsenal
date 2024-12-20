@@ -401,7 +401,7 @@ void Fight::Updates(SceneManager* sceneManager)
         {
             if (Colide(mEnemy[j], mEntity[0]))
             {
-                mEntity[0]->TakeDamage(10);//damage base
+                mEntity[0]->TakeDamage(1);//damage base
                 mEnemy.erase(mEnemy.begin() + j);
             }
 
@@ -428,7 +428,7 @@ void Fight::Updates(SceneManager* sceneManager)
         {
             mPlayerIsDead = false;
             mPlayer = { sf::IntRect(291, 493, 98, 136),
-                         sf::Vector2f(1.f, 1.f), sf::Vector2f(250.f, 670.f), 10 };
+                         sf::Vector2f(0.8f, 0.8f), sf::Vector2f(250.f, 670.f), 10 };
         }
 
         for (int i = mPowerUp.size() - 1; i >= 0; i--)
